@@ -1,4 +1,4 @@
-import { TimesheetHours } from "@datatypes/Timesheet";
+import { DailySummary, TimesheetHours } from "@datatypes/Timesheet";
 import {
   differenceInMinutes,
   endOfISOWeek,
@@ -7,6 +7,7 @@ import {
   startOfISOWeek,
 } from "date-fns";
 
+export const formatDate = (date: Date) => format(date, "E MM/dd");
 export const formatDateMMDD = (date: Date) => format(date, "MM/dd");
 export const formatDateHHMMAMPM = (date: Date) => format(date, "h:mm aaa");
 
@@ -48,12 +49,24 @@ export const sumHours = (hours: TimesheetHours[]) => {
 };
 
 export const sumHoursByDay = (hours: TimesheetHours[]) => {
-  return hours.reduce((acc: Map<number, number>, curr) => {
-    if (!curr.end) return acc;
-    const diff = differenceInMinutes(curr.end, curr.start);
+  return hours.reduce((acc: Map<number, DailySummary>, curr) => {
+    const diff = curr.end ? differenceInMinutes(curr.end, curr.start) : 0;
     const day = new Date(curr.start).getDay();
-    const current = acc.get(day) || 0;
-    acc.set(day, current + diff);
+    const current: DailySummary = acc.get(day) || { sum: 0, hours: [] };
+    const idx = current.hours.findIndex((h) => h.start === curr.start);
+    if (idx !== -1) {
+      acc.set(day, {
+        sum: current.sum + diff,
+        hours: current.hours.map((h) =>
+          h.start === curr.start ? { ...h, ...curr } : h
+        ),
+      });
+    } else {
+      acc.set(day, {
+        sum: current.sum + diff,
+        hours: [...current.hours, curr],
+      });
+    }
     return acc;
   }, new Map());
 };

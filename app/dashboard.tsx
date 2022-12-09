@@ -5,9 +5,10 @@ import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { useAccount } from "@hooks/useAccount";
 import useTimesheet from "@hooks/useTimesheet";
 import { Stack, useNavigation } from "expo-router";
+import { MotiView } from "moti";
 import { Button, Menu, ScrollView, Text, VStack } from "native-base";
 import React, { useEffect } from "react";
-import { ActivityIndicator, Pressable, View } from "react-native";
+import { ActivityIndicator, Dimensions, Pressable, View } from "react-native";
 
 export default function Dashboard() {
   const account = useAccount();
@@ -56,27 +57,36 @@ export default function Dashboard() {
         }}
       />
       {timesheet ? (
-        <VStack space={3}>
-          <ClockInOutCard timesheet={timesheet} setTimesheet={setTimesheet} />
-          <TimesheetCard timesheet={timesheet} />
-          <Button
-            variant="ghost"
-            colorScheme="emerald"
-            onPress={() => navigation.navigate("history" as never)}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
+        <MotiView
+          from={{ translateY: Dimensions.get('window').height, opacity: 0 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          transition={{
+            type: "timing",
+            duration: 500,
+          }}
+        >
+          <VStack space={3}>
+            <ClockInOutCard timesheet={timesheet} setTimesheet={setTimesheet} />
+            <TimesheetCard timesheet={timesheet} />
+            <Button
+              variant="ghost"
+              colorScheme="emerald"
+              onPress={() => navigation.navigate("history" as never)}
             >
-              <FontAwesome5 name="history" size={14} color="green" />
-              <Text ml={2} color="emerald.700">
-                View History
-              </Text>
-            </View>
-          </Button>
-        </VStack>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <FontAwesome5 name="history" size={14} color="green" />
+                <Text ml={2} color="emerald.700">
+                  View History
+                </Text>
+              </View>
+            </Button>
+          </VStack>
+        </MotiView>
       ) : (
         <ActivityIndicator />
       )}

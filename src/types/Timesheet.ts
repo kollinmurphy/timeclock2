@@ -10,3 +10,8 @@ export type TimesheetHours = {
   start: number;
   end?: number;
 };
+
+export type DailySummary = {
+  sum: number;
+  hours: TimesheetHours[];
+}

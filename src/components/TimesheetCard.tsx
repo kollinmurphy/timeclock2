@@ -9,6 +9,7 @@ import {
   sumHours,
   sumHoursByDay,
 } from "src/utils/dates";
+import TimesheetCardRow from "./TimesheetCardRow";
 
 const daysOfWeek = [
   { name: "Monday", index: 1 },
@@ -20,11 +21,10 @@ const daysOfWeek = [
   { name: "Sunday", index: 0 },
 ];
 
-type CurrentShift = {
+export type CurrentShift = {
   day: number;
   minutes: number;
 };
-
 export default function TimesheetCard(props: { timesheet: Timesheet }) {
   const { start, end } = getStartAndEndFromSort(props.timesheet.sort);
   const timerRef = useRef<any>();
@@ -80,8 +80,6 @@ export default function TimesheetCard(props: { timesheet: Timesheet }) {
     [props.timesheet.hours]
   );
 
-  const currentDay = new Date().getDay();
-
   return (
     <View p={4} rounded="xl" bg="light.50" shadow="2">
       <Heading size="md" textAlign="center">
@@ -89,33 +87,14 @@ export default function TimesheetCard(props: { timesheet: Timesheet }) {
       </Heading>
       <View borderColor="dark.700" borderWidth="1" rounded="xl" my={4}>
         {daysOfWeek.map((day, index) => (
-          <View
-            key={day.name}
-            p={3}
-            flexDirection="row"
-            justifyContent="space-between"
-            borderWidth="1"
-            borderColor="dark.700"
-            roundedTop={index === 0 ? "xl" : undefined}
-            bg={
-              day.index === currentDay && clockedIn ? "indigo.100" : undefined
-            }
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-              }}
-            >
-              {day.name}
-            </Text>
-            <Text>
-              {currentShift?.day === day.index
-                ? formatDifferenceShort(
-                    (dailyTotals.get(day.index) ?? 0) + currentShift.minutes
-                  )
-                : formatDifferenceShort(dailyTotals.get(day.index) ?? 0)}
-            </Text>
-          </View>
+          <TimesheetCardRow
+            key={index}
+            day={day}
+            dailyTotals={dailyTotals}
+            currentShift={currentShift}
+            clockedIn={clockedIn}
+            index={index}
+          />
         ))}
         <View
           p={3}
