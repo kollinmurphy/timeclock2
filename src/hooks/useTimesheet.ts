@@ -12,13 +12,16 @@ export default function useTimesheet(week?: number) {
     let localWeek = week ?? getISOWeek(new Date());
     const id = account.user?.uid;
     if (!id) return;
-    const docId = `${id}-${localWeek}`;
+    const docId = `${id}_${localWeek}`;
     (async () => {
       try {
+        console.log('getting doc')
         const doc: Timesheet | undefined = (await getSnapshot(
           "timesheets",
-          docId
+          docId,
+          id
         )) as unknown as Timesheet;
+        console.log('got doc')
         if (doc) return setTimesheet(doc);
         const newDoc: Timesheet = {
           week: localWeek,
@@ -31,6 +34,7 @@ export default function useTimesheet(week?: number) {
         await putDocument("timesheets", docId, newDoc);
         setTimesheet(newDoc);
       } catch (err) {
+        console.log('failed')
         console.error(err);
       }
     })();

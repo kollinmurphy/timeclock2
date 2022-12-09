@@ -6,8 +6,8 @@ import {
   arrayUnion,
   collection,
   doc,
+  documentId,
   DocumentSnapshot,
-  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -43,19 +43,29 @@ export const updateDocument = async (
   await updateDoc(doc(db, collectionName, id), data);
 };
 
-export const getSnapshot = async (collectionName: string, id: string) => {
-  const docRef = doc(db, collectionName, id);
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) return undefined;
+export const getSnapshot = async (
+  collectionName: string,
+  id: string,
+  userId: string
+) => {
+  console.log('getting snapshot', collectionName, id, userId)
+  const q = query(
+    collection(db, collectionName),
+    where(documentId(), "==", id),
+    where("userId", "==", userId),
+    limit(1)
+  );
+  const querySnapshot = await getDocs(q);
+  if (querySnapshot.empty) return undefined;
   return {
-    ...docSnap.data(),
-    id: docSnap.id,
+    ...querySnapshot.docs[0].data(),
+    id: querySnapshot.docs[0].id,
   };
 };
 
 export const clockIn = async (userId: string, hour: TimesheetHours) => {
   const weekId = getISOWeek(new Date());
-  const docId = `${userId}-${weekId}`;
+  const docId = `${userId}_${weekId}`;
   const docRef = doc(db, "timesheets", docId);
   await updateDoc(docRef, {
     hours: arrayUnion(hour),
@@ -64,7 +74,7 @@ export const clockIn = async (userId: string, hour: TimesheetHours) => {
 
 export const clockOut = async (userId: string, hour: TimesheetHours) => {
   const weekId = getISOWeek(new Date());
-  const docId = `${userId}-${weekId}`;
+  const docId = `${userId}_${weekId}`;
   const docRef = doc(db, "timesheets", docId);
   const oldHour = { ...hour };
   delete oldHour.end;
