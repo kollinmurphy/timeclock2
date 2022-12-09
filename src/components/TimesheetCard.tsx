@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Text } from "react-native";
 import {
   formatDifferenceShort,
-  getStartAndEndFromISOWeek,
+  getStartAndEndFromSort,
   sumHours,
   sumHoursByDay,
 } from "src/utils/dates";
@@ -26,8 +26,9 @@ type CurrentShift = {
 };
 
 export default function TimesheetCard(props: { timesheet: Timesheet }) {
-  const { start, end } = getStartAndEndFromISOWeek(props.timesheet.week);
+  const { start, end } = getStartAndEndFromSort(props.timesheet.sort);
   const timerRef = useRef<any>();
+  const [clockedIn, setClockedIn] = useState(false);
 
   const current = useMemo(
     () =>
@@ -39,7 +40,12 @@ export default function TimesheetCard(props: { timesheet: Timesheet }) {
     [props.timesheet.hours]
   );
   useEffect(() => {
-    if (!current) return setCurrentShift(undefined);
+    if (!current) {
+      setCurrentShift(undefined);
+      setClockedIn(false);
+      return;
+    }
+    setClockedIn(true);
   }, [current]);
 
   const [currentShift, setCurrentShift] = useState<CurrentShift | undefined>(
@@ -74,6 +80,8 @@ export default function TimesheetCard(props: { timesheet: Timesheet }) {
     [props.timesheet.hours]
   );
 
+  const currentDay = new Date().getDay();
+
   return (
     <View p={4} rounded="xl" bg="light.50" shadow="2">
       <Heading size="md" textAlign="center">
@@ -89,6 +97,9 @@ export default function TimesheetCard(props: { timesheet: Timesheet }) {
             borderWidth="1"
             borderColor="dark.700"
             roundedTop={index === 0 ? "xl" : undefined}
+            bg={
+              day.index === currentDay && clockedIn ? "indigo.100" : undefined
+            }
           >
             <Text
               style={{

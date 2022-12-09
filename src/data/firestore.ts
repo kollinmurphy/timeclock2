@@ -6,10 +6,17 @@ import {
   arrayUnion,
   collection,
   doc,
+  DocumentSnapshot,
   getDoc,
+  getDocs,
   getFirestore,
+  limit,
+  orderBy,
+  query,
   setDoc,
+  startAfter,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import firebaseApp from "./firebase";
 
@@ -59,7 +66,7 @@ export const clockOut = async (userId: string, hour: TimesheetHours) => {
   const weekId = getISOWeek(new Date());
   const docId = `${userId}-${weekId}`;
   const docRef = doc(db, "timesheets", docId);
-  const oldHour = {...hour}
+  const oldHour = { ...hour };
   delete oldHour.end;
   await updateDoc(docRef, {
     hours: arrayRemove(oldHour),
@@ -67,4 +74,23 @@ export const clockOut = async (userId: string, hour: TimesheetHours) => {
   await updateDoc(docRef, {
     hours: arrayUnion(hour),
   });
+};
+
+export const queryTimesheets = async (
+  userId: string,
+  previousRef?: DocumentSnapshot
+) => {
+  const q = query(
+    collection(db, "timesheets"),
+    where("userId", "==", userId),
+    orderBy("sort", "desc"),
+    limit(10),
+    ...(previousRef ? [startAfter(previousRef)] : [])
+  );
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+    snapshot: doc,
+  }));
 };

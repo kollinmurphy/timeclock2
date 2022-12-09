@@ -6,15 +6,10 @@ import { useAccount } from "../src/hooks/useAccount";
 export default function Home() {
   const navigation = useNavigation();
   const account = useAccount();
-  const [waited, setWaited] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setWaited(true), 1000);
-  }, []);
-
-  useEffect(() => {
-    if (!waited) return;
-    if (account) {
+    if (account.status === "loading") return;
+    if (account.user) {
       navigation.reset({
         index: 0,
         routes: [{ name: "dashboard" as never }],
@@ -25,7 +20,7 @@ export default function Home() {
         routes: [{ name: "signin" as never }],
       });
     }
-  }, [account, waited]);
+  }, [account]);
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

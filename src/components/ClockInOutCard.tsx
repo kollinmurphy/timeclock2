@@ -30,7 +30,7 @@ export default function ClockInOutCard(props: {
         day: new Date().getDay(),
         start: new Date().getTime(),
       };
-      await clockIn(account.uid, hour);
+      await clockIn(account.user.uid, hour);
       props.setTimesheet((t) => {
         if (!t) return undefined;
         return {
@@ -42,7 +42,7 @@ export default function ClockInOutCard(props: {
       console.error(err);
     }
     setLoading(false);
-  }, [account]);
+  }, [account.user]);
 
   const handleClockOut = useCallback(async () => {
     setLoading(true);
@@ -51,7 +51,7 @@ export default function ClockInOutCard(props: {
         ...current,
         end: new Date().getTime(),
       };
-      await clockOut(account.uid, hour);
+      await clockOut(account.user.uid, hour);
       props.setTimesheet((t) => {
         if (!t) return undefined;
         return {
@@ -63,7 +63,7 @@ export default function ClockInOutCard(props: {
       console.error(err);
     }
     setLoading(false);
-  }, [account, current]);
+  }, [account.user, current]);
 
   return (
     <View p={4} rounded="xl" bg="light.50" shadow="2">
@@ -82,7 +82,7 @@ export default function ClockInOutCard(props: {
         <Button
           size="lg"
           disabled={loading}
-          colorScheme={loading ? "gray" : undefined}
+          colorScheme={loading ? "gray" : 'indigo'}
           onPress={handleClockOut}
         >
           Clock Out
@@ -91,7 +91,7 @@ export default function ClockInOutCard(props: {
         <Button
           size="lg"
           disabled={loading}
-          colorScheme={loading ? "gray" : undefined}
+          colorScheme={loading ? "gray" : 'emerald'}
           onPress={handleClockIn}
         >
           Clock In

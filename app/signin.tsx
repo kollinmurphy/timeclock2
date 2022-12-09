@@ -18,13 +18,13 @@ export default function SignIn() {
   });
 
   useEffect(() => {
-    if (account) {
+    if (account.user) {
       navigation.reset({
         index: 0,
         routes: [{ name: "dashboard" as never }],
       });
     }
-  }, [account]);
+  }, [account.user]);
 
   const handleSignIn = useCallback(async () => {
     setStatus("loading");
@@ -60,7 +60,12 @@ export default function SignIn() {
             type="password"
             size="xl"
           />
-          <Button onPress={handleSignIn} size="lg">
+          <Button
+            onPress={handleSignIn}
+            size="lg"
+            disabled={status === "loading"}
+            colorScheme={status === "loading" ? "gray" : undefined}
+          >
             Sign In
           </Button>
           <Button

@@ -10,7 +10,7 @@ export default function useTimesheet(week?: number) {
 
   useEffect(() => {
     let localWeek = week ?? getISOWeek(new Date());
-    const id = account?.uid;
+    const id = account.user?.uid;
     if (!id) return;
     const docId = `${id}-${localWeek}`;
     (async () => {
@@ -22,6 +22,9 @@ export default function useTimesheet(week?: number) {
         if (doc) return setTimesheet(doc);
         const newDoc: Timesheet = {
           week: localWeek,
+          sort: `${new Date().getFullYear()}-${
+            localWeek < 10 ? `0${localWeek}` : localWeek
+          }`,
           userId: id,
           hours: [],
         };
@@ -31,7 +34,7 @@ export default function useTimesheet(week?: number) {
         console.error(err);
       }
     })();
-  }, [week, account]);
+  }, [week, account.user]);
 
   return {
     timesheet,

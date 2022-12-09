@@ -10,9 +10,11 @@ import {
 export const formatDateMMDD = (date: Date) => format(date, "MM/dd");
 export const formatDateHHMMAMPM = (date: Date) => format(date, "h:mm aaa");
 
-export const getStartAndEndFromISOWeek = (isoWeek: number) => {
-  const startDate = startOfISOWeek(setISOWeek(new Date(), isoWeek));
-  const endDate = endOfISOWeek(setISOWeek(new Date(), isoWeek));
+export const getStartAndEndFromSort = (sort: string) => {
+  const [year, isoWeek] = sort.split("-").map((s) => parseInt(s, 10));
+  const date = new Date(year, 0, 1);
+  const startDate = startOfISOWeek(setISOWeek(date, isoWeek));
+  const endDate = endOfISOWeek(setISOWeek(date, isoWeek));
   return {
     start: formatDateMMDD(startDate),
     end: formatDateMMDD(endDate),

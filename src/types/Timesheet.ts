@@ -1,6 +1,7 @@
 export type Timesheet = {
   userId: string;
   week: number;
+  sort: string;
   hours: TimesheetHours[];
 };
 

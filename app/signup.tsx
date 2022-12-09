@@ -1,14 +1,11 @@
-import { Stack, useNavigation } from "expo-router";
+import { Stack } from "expo-router";
 import { Button, Input, ScrollView, VStack } from "native-base";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import ErrorAlert from "../src/components/ErrorAlert";
 import { createAcount } from "../src/data/auth";
-import { useAccount } from "../src/hooks/useAccount";
 
 export default function SignIn() {
-  const navigation = useNavigation();
-  const account = useAccount();
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -17,21 +14,12 @@ export default function SignIn() {
     password: "",
   });
 
-  useEffect(() => {
-    if (account) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "dashboard" as never }],
-      });
-    }
-  }, [account]);
-
   const handleSignUp = useCallback(async () => {
     setStatus("loading");
     try {
       await createAcount(credentials.email, credentials.password);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError(err.message);
     }
     setStatus("idle");
@@ -60,6 +48,7 @@ export default function SignIn() {
             onPress={handleSignUp}
             size="lg"
             disabled={status === "loading"}
+            colorScheme={status === "loading" ? "gray" : undefined}
           >
             Sign Up
           </Button>
