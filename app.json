@@ -1,6 +1,8 @@
 {
   "expo": {
-    "scheme": "acme",
+    "name": "Timeclock",
+    "slug": "timeclock2",
+    "scheme": "timeclock2",
     "web": { "bundler": "metro" }
   }
 }

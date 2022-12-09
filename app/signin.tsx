@@ -1,0 +1,78 @@
+import ErrorAlert from "@components/ErrorAlert";
+import { Stack, useNavigation } from "expo-router";
+import { Button, Input, ScrollView, VStack } from "native-base";
+import { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
+import { signIn } from "../src/data/auth";
+import { useAccount } from "../src/hooks/useAccount";
+
+export default function SignIn() {
+  const navigation = useNavigation();
+  const account = useAccount();
+  const [status, setStatus] = useState<"idle" | "loading">("idle");
+  const [error, setError] = useState<string | null>(null);
+
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    if (account) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "dashboard" as never }],
+      });
+    }
+  }, [account]);
+
+  const handleSignIn = useCallback(async () => {
+    setStatus("loading");
+    try {
+      await signIn(credentials.email, credentials.password);
+    } catch (err) {
+      setError(err.message);
+    }
+    setStatus("idle");
+  }, [credentials]);
+
+  const navigateToSignUp = useCallback(
+    () => navigation.navigate("signup" as never),
+    []
+  );
+
+  return (
+    <View style={{ flex: 1, alignItems: "center" }}>
+      <ScrollView width="100%" flex={1} px={2}>
+        <VStack space={2}>
+          <Stack.Screen options={{ title: "Sign In" }} />
+          <Input
+            placeholder="Email"
+            autoCorrect={false}
+            onChangeText={(email) => setCredentials((c) => ({ ...c, email }))}
+            size="xl"
+          />
+          <Input
+            placeholder="Password"
+            onChangeText={(password) =>
+              setCredentials((c) => ({ ...c, password }))
+            }
+            type="password"
+            size="xl"
+          />
+          <Button onPress={handleSignIn} size="lg">
+            Sign In
+          </Button>
+          <Button
+            variant="ghost"
+            onPress={navigateToSignUp}
+            disabled={status === "loading"}
+          >
+            Sign Up
+          </Button>
+          <ErrorAlert error={error} />
+        </VStack>
+      </ScrollView>
+    </View>
+  );
+}

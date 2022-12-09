@@ -1,4 +1,7 @@
 {
+  "name": "timeclock",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -6,12 +9,17 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
+    "date-fns": "^2.29.3",
     "expo": "~47.0.3",
     "expo-constants": "~14.0.2",
     "expo-linking": "~3.2.3",
+    "expo-modules-autolinking": "^1.0.0",
     "expo-router": "~0.0.35",
     "expo-splash-screen": "~0.17.4",
     "expo-status-bar": "~1.4.2",
+    "firebase": "^9.15.0",
+    "native-base": "^3.4.25",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
@@ -19,11 +27,18 @@
     "react-native-reanimated": "~2.12.0",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
+    "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.7"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9"
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
+    "@babel/preset-env": "^7.20.2",
+    "@types/react": "^18.0.26",
+    "@types/react-native": "^0.70.8",
+    "prettier": "^2.8.1",
+    "prettier-plugin-organize-imports": "^3.2.0",
+    "typescript": "^4.9.4"
   },
   "resolutions": {
     "metro": "^0.73.1",
@@ -32,8 +47,5 @@
   "overrides": {
     "metro": "^0.73.1",
     "metro-resolver": "^0.73.1"
-  },
-  "name": "timeclock",
-  "version": "1.0.0",
-  "private": true
+  }
 }
