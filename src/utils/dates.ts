@@ -53,20 +53,10 @@ export const sumHoursByDay = (hours: TimesheetHours[]) => {
     const diff = curr.end ? differenceInMinutes(curr.end, curr.start) : 0;
     const day = new Date(curr.start).getDay();
     const current: DailySummary = acc.get(day) || { sum: 0, hours: [] };
-    const idx = current.hours.findIndex((h) => h.start === curr.start);
-    if (idx !== -1) {
-      acc.set(day, {
-        sum: current.sum + diff,
-        hours: current.hours.map((h) =>
-          h.start === curr.start ? { ...h, ...curr } : h
-        ),
-      });
-    } else {
-      acc.set(day, {
-        sum: current.sum + diff,
-        hours: [...current.hours, curr],
-      });
-    }
+    acc.set(day, {
+      sum: current.sum + diff,
+      hours: [...current.hours, curr],
+    });
     return acc;
   }, new Map());
 };

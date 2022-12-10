@@ -1,7 +1,14 @@
 import { Timesheet } from "@datatypes/Timesheet";
 import { differenceInMinutes } from "date-fns";
 import { Heading, View } from "native-base";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Text } from "react-native";
 import {
   formatDifferenceShort,
@@ -9,7 +16,7 @@ import {
   sumHours,
   sumHoursByDay,
 } from "src/utils/dates";
-import TimesheetCardRow from "./TimesheetCardRow";
+import TimesheetCardDay from "./TimesheetCardDay";
 
 const daysOfWeek = [
   { name: "Monday", index: 1 },
@@ -25,7 +32,10 @@ export type CurrentShift = {
   day: number;
   minutes: number;
 };
-export default function TimesheetCard(props: { timesheet: Timesheet }) {
+export default function TimesheetCard(props: {
+  timesheet: Timesheet;
+  setTimesheet: Dispatch<SetStateAction<Timesheet>>;
+}) {
   const { start, end } = getStartAndEndFromSort(props.timesheet.sort);
   const timerRef = useRef<any>();
   const [clockedIn, setClockedIn] = useState(false);
@@ -87,13 +97,15 @@ export default function TimesheetCard(props: { timesheet: Timesheet }) {
       </Heading>
       <View borderColor="dark.700" borderWidth="1" rounded="xl" my={4}>
         {daysOfWeek.map((day, index) => (
-          <TimesheetCardRow
+          <TimesheetCardDay
             key={index}
             day={day}
             dailyTotals={dailyTotals}
             currentShift={currentShift}
             clockedIn={clockedIn}
             index={index}
+            sort={props.timesheet.sort}
+            setTimesheet={props.setTimesheet}
           />
         ))}
         <View

@@ -1,24 +1,16 @@
-import { DailySummary } from "@datatypes/Timesheet";
+import { DailySummary, Timesheet, TimesheetHours } from "@datatypes/Timesheet";
 import { MotiView } from "moti";
 import { useTheme, View } from "native-base";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Pressable, Text } from "react-native";
-import { formatDateHHMMAMPM, formatDifferenceShort } from "src/utils/dates";
+import { formatDifferenceShort } from "src/utils/dates";
+import EditHoursModal from "./EditHoursModal";
 import { CurrentShift } from "./TimesheetCard";
-
-const daysOfWeek = [
-  { name: "Monday", index: 1 },
-  { name: "Tuesday", index: 2 },
-  { name: "Wednesday", index: 3 },
-  { name: "Thursday", index: 4 },
-  { name: "Friday", index: 5 },
-  { name: "Saturday", index: 6 },
-  { name: "Sunday", index: 0 },
-];
+import TimesheetEntry from "./TimesheetEntry";
 
 const COLLAPSED_HEIGHT = 41;
-const HEIGHT_PER_ITEM = 22;
-const BASELINE_EXPANDED_HEIGHT = 8;
+const HEIGHT_PER_ITEM = 35;
+const BASELINE_EXPANDED_HEIGHT = 12;
 
 export default function TimesheetCardRow({
   day,
@@ -26,14 +18,21 @@ export default function TimesheetCardRow({
   index,
   currentShift,
   dailyTotals,
+  sort,
+  setTimesheet,
 }: {
+  sort: string;
   day: { name: string; index: number };
   clockedIn: boolean;
   index: number;
   currentShift: CurrentShift | undefined;
   dailyTotals: Map<number, DailySummary>;
+  setTimesheet: Dispatch<SetStateAction<Timesheet>>;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [editingHours, setEditingHours] = useState<
+    TimesheetHours | undefined
+  >();
   const currentDay = new Date().getDay();
   const theme = useTheme();
 
@@ -96,24 +95,30 @@ export default function TimesheetCardRow({
               : formatDifferenceShort(dailyTotals.get(day.index)?.sum ?? 0)}
           </Text>
         </View>
+        <EditHoursModal
+          hours={editingHours}
+          onClose={() => setEditingHours(undefined)}
+          sort={sort}
+          setTimesheet={setTimesheet}
+        />
         <View pt={3}>
           {dailyTotals.get(day.index)?.hours.length ? (
-            dailyTotals.get(day.index)?.hours.map((h) => (
-              <Text
-                key={h.start.toString()}
-                style={{
-                  paddingVertical: 2,
-                  textAlign: "right",
-                }}
-              >
-                {formatDateHHMMAMPM(new Date(h.start))} -{" "}
-                {h.end ? formatDateHHMMAMPM(new Date(h.end)) : "now"}
-              </Text>
-            ))
+            dailyTotals
+              .get(day.index)
+              ?.hours.map((h, i) => (
+                <TimesheetEntry
+                  key={h.start}
+                  hours={h}
+                  setEditingHours={() => setEditingHours(h)}
+                  day={day}
+                  index={i}
+                  dailyTotals={dailyTotals}
+                />
+              ))
           ) : (
             <Text
               style={{
-                paddingBottom: 2,
+                paddingTop: theme.space[2],
               }}
             >
               No hours!

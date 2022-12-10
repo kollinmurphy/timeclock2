@@ -17,7 +17,6 @@ export default function History() {
     if (!account.user) return;
     (async () => {
       const data = await queryTimesheets(account.user.uid);
-      console.log("firstpage", data);
       setTimesheets(data as any);
     })();
   }, [account.user]);
@@ -30,7 +29,6 @@ export default function History() {
         account.user.uid,
         timesheets.at(-1).snapshot
       );
-      console.log("nextpage", data);
       setTimesheets((t) => [...t, ...data]);
     })();
   }, [account.user, timesheets]);

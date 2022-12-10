@@ -48,7 +48,6 @@ export const getSnapshot = async (
   id: string,
   userId: string
 ) => {
-  console.log('getting snapshot', collectionName, id, userId)
   const q = query(
     collection(db, collectionName),
     where(documentId(), "==", id),
@@ -65,7 +64,8 @@ export const getSnapshot = async (
 
 export const clockIn = async (userId: string, hour: TimesheetHours) => {
   const weekId = getISOWeek(new Date());
-  const docId = `${userId}_${weekId}`;
+  const year = new Date().getFullYear();
+  const docId = `${userId}_${year}-${weekId}`;
   const docRef = doc(db, "timesheets", docId);
   await updateDoc(docRef, {
     hours: arrayUnion(hour),
@@ -74,7 +74,8 @@ export const clockIn = async (userId: string, hour: TimesheetHours) => {
 
 export const clockOut = async (userId: string, hour: TimesheetHours) => {
   const weekId = getISOWeek(new Date());
-  const docId = `${userId}_${weekId}`;
+  const year = new Date().getFullYear();
+  const docId = `${userId}_${year}-${weekId}`;
   const docRef = doc(db, "timesheets", docId);
   const oldHour = { ...hour };
   delete oldHour.end;
@@ -83,6 +84,37 @@ export const clockOut = async (userId: string, hour: TimesheetHours) => {
   });
   await updateDoc(docRef, {
     hours: arrayUnion(hour),
+  });
+};
+
+export const updateHours = async (
+  userId: string,
+  sort: string,
+  oldHour: TimesheetHours,
+  newHour: TimesheetHours
+) => {
+  const docId = `${userId}_${sort}`;
+  const docRef = doc(db, "timesheets", docId);
+  await updateDoc(docRef, {
+    hours: arrayRemove(oldHour),
+  });
+  await updateDoc(docRef, {
+    hours: arrayUnion({
+      ...newHour,
+      edited: true,
+    }),
+  });
+};
+
+export const deleteHours = async (
+  userId: string,
+  sort: string,
+  hour: TimesheetHours
+) => {
+  const docId = `${userId}_${sort}`;
+  const docRef = doc(db, "timesheets", docId);
+  await updateDoc(docRef, {
+    hours: arrayRemove(hour),
   });
 };
 

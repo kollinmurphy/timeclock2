@@ -3,6 +3,36 @@
     "name": "Timeclock",
     "slug": "timeclock2",
     "scheme": "timeclock2",
-    "web": { "bundler": "metro" }
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.canlin.timeclock2"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.canlin.timeclock2"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5e1f05bd-e582-4a08-993e-e674c312cfe0"
+      }
+    }
   }
 }

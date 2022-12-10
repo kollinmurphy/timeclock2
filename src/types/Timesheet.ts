@@ -9,6 +9,7 @@ export type TimesheetHours = {
   day: number;
   start: number;
   end?: number;
+  edited?: boolean;
 };
 
 export type DailySummary = {

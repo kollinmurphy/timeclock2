@@ -56,7 +56,7 @@ export default function ClockInOutCard(props: {
         if (!t) return undefined;
         return {
           ...t,
-          hours: [...t.hours, hour],
+          hours: t.hours.map(t => t.start === hour.start ? hour : t)
         };
       });
     } catch (err) {

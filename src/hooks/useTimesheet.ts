@@ -4,24 +4,23 @@ import { getSnapshot, putDocument } from "../data/firestore";
 import { Timesheet } from "../types/Timesheet";
 import { useAccount } from "./useAccount";
 
-export default function useTimesheet(week?: number) {
+export default function useTimesheet(week?: number, year?: number) {
   const account = useAccount();
   const [timesheet, setTimesheet] = useState<Timesheet | null>(null);
 
   useEffect(() => {
     let localWeek = week ?? getISOWeek(new Date());
+    let localYear = year ?? new Date().getFullYear();
     const id = account.user?.uid;
     if (!id) return;
-    const docId = `${id}_${localWeek}`;
+    const docId = `${id}_${localYear}-${localWeek}`;
     (async () => {
       try {
-        console.log('getting doc')
         const doc: Timesheet | undefined = (await getSnapshot(
           "timesheets",
           docId,
           id
         )) as unknown as Timesheet;
-        console.log('got doc')
         if (doc) return setTimesheet(doc);
         const newDoc: Timesheet = {
           week: localWeek,
@@ -34,7 +33,7 @@ export default function useTimesheet(week?: number) {
         await putDocument("timesheets", docId, newDoc);
         setTimesheet(newDoc);
       } catch (err) {
-        console.log('failed')
+        console.log("failed");
         console.error(err);
       }
     })();

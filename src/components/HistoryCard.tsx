@@ -80,7 +80,7 @@ export default function HistoryCard(props: { timesheet: Timesheet }) {
                 <Heading size="sm">
                   {formatDate(new Date(hour.start))}  -{"  "}
                   {formatDateHHMMAMPM(new Date(hour.start))} -{" "}
-                  {formatDateHHMMAMPM(new Date(hour.end))}
+                  {hour.end ? formatDateHHMMAMPM(new Date(hour.end)) : 'now'}
                 </Heading>
               </View>
             ))}
