@@ -32,17 +32,13 @@ export default function HistoryCard(props: { timesheet: Timesheet }) {
 
   return (
     <Pressable
-      style={({ pressed }) => [
-        pressed ? { opacity: 0.5 } : { opacity: 1 },
-        // { flex: 1 },
-      ]}
+      style={({ pressed }) => [pressed ? { opacity: 0.5 } : { opacity: 1 }]}
       onPress={() => setExpanded(!expanded)}
     >
       <EditHoursModal
         hours={editingHours}
         sort={props.timesheet.sort}
         onClose={() => setEditingHours(undefined)}
-        currentHours={props.timesheet.hours}
       />
       <View
         p={4}

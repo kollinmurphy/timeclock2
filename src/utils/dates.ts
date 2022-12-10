@@ -9,6 +9,7 @@ import {
 
 export const formatDate = (date: Date) => format(date, "E MM/dd");
 export const formatDateMMDD = (date: Date) => format(date, "MM/dd");
+export const formatDateEMMDDYYYY = (date: Date) => format(date, "EEE, MMM d, yyyy");
 export const formatDateHHMMAMPM = (date: Date) => format(date, "h:mm aaa");
 
 export const getStartAndEndFromSort = (sort: string) => {

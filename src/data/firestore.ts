@@ -1,4 +1,4 @@
-import { TimesheetHours } from "@datatypes/Timesheet";
+import { Timesheet, TimesheetHours } from "@datatypes/Timesheet";
 import { getISOWeek } from "date-fns";
 import {
   addDoc,
@@ -139,6 +139,35 @@ export const deleteHours = async (
   await updateDoc(docRef, {
     hours: arrayRemove(hour),
   });
+};
+
+export const addHours = async (
+  userId: string,
+  sort: string,
+  hour: TimesheetHours
+) => {
+  const docId = `${userId}_${sort}`;
+  const docRef = doc(db, "timesheets", docId);
+  console.log('adding hours')
+  const snap = await getSnapshot("timesheets", docId, userId) as unknown as Timesheet;
+  console.log('snap', snap)
+  if (!snap) {
+    console.log('creating')
+    const [year, week] = sort.split("-");
+    await putDocument("timesheets", docId, {
+      userId,
+      sort,
+      year,
+      week,
+      hours: [hour],
+    });
+  } else {
+    if (snap.hours.find((h) => h.start === hour.start)) throw new Error("You already have a shift with this start time");
+    console.log('updating')
+    await updateDoc(docRef, {
+      hours: arrayUnion(hour),
+    });
+  }
 };
 
 export const queryTimesheets = async (

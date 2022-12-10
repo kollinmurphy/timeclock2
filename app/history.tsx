@@ -1,3 +1,4 @@
+import AddHours from "@components/AddHours";
 import HistoryCard from "@components/HistoryCard";
 import { queryTimesheets } from "@data/firestore";
 import { Timesheet } from "@datatypes/Timesheet";
@@ -56,6 +57,16 @@ export default function History() {
         data={timesheets}
         renderItem={({ item }) => <HistoryCard timesheet={item} />}
         ListEmptyComponent={<ActivityIndicator style={{ paddingTop: 24 }} />}
+        ListHeaderComponent={
+          <AddHours
+            onAdd={async () => {
+              console.log("refetching timesheets");
+              const data = await queryTimesheets(account.user.uid);
+              console.log("got em", JSON.stringify(data, null, 2));
+              setTimesheets(data as any);
+            }}
+          />
+        }
       />
     </View>
   );

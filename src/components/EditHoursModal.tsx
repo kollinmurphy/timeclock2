@@ -12,7 +12,6 @@ export default function EditHoursModal(props: {
   sort: string;
   hours: TimesheetHours | null;
   onClose: () => void;
-  currentHours: TimesheetHours[];
 }) {
   const account = useAccount();
   const [tmpStart, setTmpStart] = useState<Date | undefined>(undefined);

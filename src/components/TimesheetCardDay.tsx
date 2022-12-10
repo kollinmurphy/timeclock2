@@ -97,7 +97,6 @@ export default function TimesheetCardRow({
           hours={editingHours}
           onClose={() => setEditingHours(undefined)}
           sort={sort}
-          currentHours={dailyTotals.get(day.index)?.hours}
         />
         <View pt={3}>
           {dailyTotals.get(day.index)?.hours.length ? (
