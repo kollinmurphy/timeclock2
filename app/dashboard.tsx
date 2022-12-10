@@ -67,18 +67,13 @@ export default function Dashboard() {
         <View>
           {timesheet && (
             <VStack space={3}>
-              <ClockInOutCard
-                timesheet={timesheet}
-                setTimesheet={setTimesheet}
-              />
-              <TimesheetCard
-                timesheet={timesheet}
-                setTimesheet={setTimesheet}
-              />
+              <ClockInOutCard timesheet={timesheet} />
+              <TimesheetCard timesheet={timesheet} />
               <Button
                 variant="ghost"
                 colorScheme="emerald"
                 onPress={() => navigation.navigate("history" as never)}
+                marginBottom={3}
               >
                 <View
                   style={{

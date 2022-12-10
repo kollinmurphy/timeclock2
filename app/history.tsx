@@ -4,6 +4,7 @@ import { Timesheet } from "@datatypes/Timesheet";
 import { useAccount } from "@hooks/useAccount";
 import { Stack } from "expo-router";
 import { DocumentSnapshot } from "firebase/firestore";
+import { theme } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
 
@@ -34,14 +35,20 @@ export default function History() {
   }, [account.user, timesheets]);
 
   return (
-    <View style={{ flex: 1, width: "100%", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+        alignItems: "center",
+        marginBottom: theme.space[2],
+      }}
+    >
       <Stack.Screen options={{ title: "History" }} />
       <FlatList
         style={{ width: "100%" }}
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         contentContainerStyle={{
           width: "100%",
-          flex: 1,
           padding: 12,
         }}
         onEndReachedThreshold={0.5}

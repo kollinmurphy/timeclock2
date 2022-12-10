@@ -1,14 +1,7 @@
 import { Timesheet } from "@datatypes/Timesheet";
 import { differenceInMinutes } from "date-fns";
 import { Heading, View } from "native-base";
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Text } from "react-native";
 import {
   formatDifferenceShort,
@@ -32,10 +25,7 @@ export type CurrentShift = {
   day: number;
   minutes: number;
 };
-export default function TimesheetCard(props: {
-  timesheet: Timesheet;
-  setTimesheet: Dispatch<SetStateAction<Timesheet>>;
-}) {
+export default function TimesheetCard(props: { timesheet: Timesheet }) {
   const { start, end } = getStartAndEndFromSort(props.timesheet.sort);
   const timerRef = useRef<any>();
   const [clockedIn, setClockedIn] = useState(false);
@@ -105,7 +95,6 @@ export default function TimesheetCard(props: {
             clockedIn={clockedIn}
             index={index}
             sort={props.timesheet.sort}
-            setTimesheet={props.setTimesheet}
           />
         ))}
         <View

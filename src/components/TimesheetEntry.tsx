@@ -1,39 +1,44 @@
-import { DailySummary, TimesheetHours } from "@datatypes/Timesheet";
+import { TimesheetHours } from "@datatypes/Timesheet";
 import { useTheme } from "native-base";
 import { Pressable, Text } from "react-native";
-import { formatDateHHMMAMPM } from "src/utils/dates";
+import { formatDateHHMMAMPM, formatDateMMDD } from "src/utils/dates";
 
 export default function TimesheetEntry(props: {
   setEditingHours: React.Dispatch<React.SetStateAction<TimesheetHours>>;
   hours: TimesheetHours;
-  index: number;
-  dailyTotals: Map<number, DailySummary>;
-  day: { index: number; name: string };
+  type: "first" | "middle" | "last" | "single";
+  showDate?: boolean;
 }) {
   const theme = useTheme();
   return (
     <Pressable
       key={props.hours.start.toString()}
       onPress={() => props.setEditingHours(props.hours)}
+      disabled={!props.hours.end}
       style={({ pressed }) => [
         pressed ? { opacity: 0.5 } : { opacity: 1 },
         {
           borderColor: theme.colors.dark[500],
           borderBottomWidth: 0.5,
-          borderTopWidth: props.index === 0 ? 1 : 0.5,
+          borderTopWidth:
+            props.type === "first" || props.type === "single" ? 1 : 0.5,
           borderRightWidth: 1,
           borderLeftWidth: 1,
           padding: theme.space[2],
-          borderTopLeftRadius: props.index === 0 ? theme.radii.xl : undefined,
-          borderTopRightRadius: props.index === 0 ? theme.radii.xl : undefined,
+          borderTopLeftRadius:
+            props.type === "first" || props.type === "single"
+              ? theme.radii.xl
+              : undefined,
+          borderTopRightRadius:
+            props.type === "first" || props.type === "single"
+              ? theme.radii.xl
+              : undefined,
           borderBottomLeftRadius:
-            props.index ===
-            props.dailyTotals.get(props.day.index)?.hours.length - 1
+            props.type === "last" || props.type === "single"
               ? theme.radii.xl
               : undefined,
           borderBottomRightRadius:
-            props.index ===
-            props.dailyTotals.get(props.day.index)?.hours.length - 1
+            props.type === "last" || props.type === "single"
               ? theme.radii.xl
               : undefined,
           flexDirection: "row",
@@ -43,6 +48,7 @@ export default function TimesheetEntry(props: {
       ]}
     >
       <Text>
+        {props.showDate && formatDateMMDD(new Date(props.hours.start)) + " - "}
         {formatDateHHMMAMPM(new Date(props.hours.start))} -{" "}
         {props.hours.end
           ? formatDateHHMMAMPM(new Date(props.hours.end))
@@ -58,13 +64,15 @@ export default function TimesheetEntry(props: {
           </Text>
         )}
       </Text>
-      <Text
-        style={{
-          color: theme.colors.dark[400],
-        }}
-      >
-        Edit
-      </Text>
+      {props.hours.end && (
+        <Text
+          style={{
+            color: theme.colors.dark[400],
+          }}
+        >
+          Edit
+        </Text>
+      )}
     </Pressable>
   );
 }

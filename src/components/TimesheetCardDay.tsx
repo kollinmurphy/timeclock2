@@ -1,7 +1,7 @@
-import { DailySummary, Timesheet, TimesheetHours } from "@datatypes/Timesheet";
+import { DailySummary, TimesheetHours } from "@datatypes/Timesheet";
 import { MotiView } from "moti";
 import { useTheme, View } from "native-base";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Pressable, Text } from "react-native";
 import { formatDifferenceShort } from "src/utils/dates";
 import EditHoursModal from "./EditHoursModal";
@@ -19,7 +19,6 @@ export default function TimesheetCardRow({
   currentShift,
   dailyTotals,
   sort,
-  setTimesheet,
 }: {
   sort: string;
   day: { name: string; index: number };
@@ -27,7 +26,6 @@ export default function TimesheetCardRow({
   index: number;
   currentShift: CurrentShift | undefined;
   dailyTotals: Map<number, DailySummary>;
-  setTimesheet: Dispatch<SetStateAction<Timesheet>>;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [editingHours, setEditingHours] = useState<
@@ -99,7 +97,7 @@ export default function TimesheetCardRow({
           hours={editingHours}
           onClose={() => setEditingHours(undefined)}
           sort={sort}
-          setTimesheet={setTimesheet}
+          currentHours={dailyTotals.get(day.index)?.hours}
         />
         <View pt={3}>
           {dailyTotals.get(day.index)?.hours.length ? (
@@ -110,9 +108,15 @@ export default function TimesheetCardRow({
                   key={h.start}
                   hours={h}
                   setEditingHours={() => setEditingHours(h)}
-                  day={day}
-                  index={i}
-                  dailyTotals={dailyTotals}
+                  type={
+                    dailyTotals.get(day.index).hours.length === 1
+                      ? "single"
+                      : i === 0
+                      ? "first"
+                      : i === dailyTotals.get(day.index).hours.length - 1
+                      ? "last"
+                      : "middle"
+                  }
                 />
               ))
           ) : (

@@ -11,6 +11,7 @@ import {
   getDocs,
   getFirestore,
   limit,
+  onSnapshot,
   orderBy,
   query,
   setDoc,
@@ -41,6 +42,28 @@ export const updateDocument = async (
   data: any
 ) => {
   await updateDoc(doc(db, collectionName, id), data);
+};
+
+export const listenToDocument = (
+  collectionName: string,
+  id: string,
+  userId: string,
+  callback: (data: any) => void
+) => {
+  const q = query(
+    collection(db, collectionName),
+    where(documentId(), "==", id),
+    where("userId", "==", userId),
+    limit(1)
+  );
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    if (snapshot.empty) return callback(undefined);
+    return callback({
+      ...snapshot.docs[0].data(),
+      id: snapshot.docs[0].id,
+    });
+  });
+  return unsubscribe;
 };
 
 export const getSnapshot = async (

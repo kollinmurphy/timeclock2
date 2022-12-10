@@ -1,5 +1,5 @@
 import { deleteHours, updateHours } from "@data/firestore";
-import { Timesheet, TimesheetHours } from "@datatypes/Timesheet";
+import { TimesheetHours } from "@datatypes/Timesheet";
 import { useAccount } from "@hooks/useAccount";
 import { Button, Modal, View } from "native-base";
 import { useCallback, useMemo, useState } from "react";
@@ -12,7 +12,7 @@ export default function EditHoursModal(props: {
   sort: string;
   hours: TimesheetHours | null;
   onClose: () => void;
-  setTimesheet: React.Dispatch<React.SetStateAction<Timesheet>>;
+  currentHours: TimesheetHours[];
 }) {
   const account = useAccount();
   const [tmpStart, setTmpStart] = useState<Date | undefined>(undefined);
@@ -45,10 +45,6 @@ export default function EditHoursModal(props: {
     try {
       setLoading(true);
       await deleteHours(account.user.uid, props.sort, props.hours);
-      props.setTimesheet((t) => ({
-        ...t,
-        hours: t.hours.filter((h) => h.start !== props.hours.start),
-      }));
       props.onClose();
     } catch (err) {
       setError(err.message);
@@ -69,18 +65,6 @@ export default function EditHoursModal(props: {
         start: startDate.getTime(),
         end: endDate.getTime(),
       });
-      props.setTimesheet((t) => ({
-        ...t,
-        hours: t.hours.map((h) => {
-          if (h.start !== props.hours.start) return h;
-          return {
-            day: props.hours.day,
-            start: startDate.getTime(),
-            end: endDate.getTime(),
-            edited: true,
-          };
-        }),
-      }));
       setError(undefined);
       props.onClose();
     } catch (err) {

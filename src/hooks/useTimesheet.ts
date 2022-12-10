@@ -1,6 +1,6 @@
 import { getISOWeek } from "date-fns";
 import { useEffect, useState } from "react";
-import { getSnapshot, putDocument } from "../data/firestore";
+import { listenToDocument } from "../data/firestore";
 import { Timesheet } from "../types/Timesheet";
 import { useAccount } from "./useAccount";
 
@@ -14,29 +14,10 @@ export default function useTimesheet(week?: number, year?: number) {
     const id = account.user?.uid;
     if (!id) return;
     const docId = `${id}_${localYear}-${localWeek}`;
-    (async () => {
-      try {
-        const doc: Timesheet | undefined = (await getSnapshot(
-          "timesheets",
-          docId,
-          id
-        )) as unknown as Timesheet;
-        if (doc) return setTimesheet(doc);
-        const newDoc: Timesheet = {
-          week: localWeek,
-          sort: `${new Date().getFullYear()}-${
-            localWeek < 10 ? `0${localWeek}` : localWeek
-          }`,
-          userId: id,
-          hours: [],
-        };
-        await putDocument("timesheets", docId, newDoc);
-        setTimesheet(newDoc);
-      } catch (err) {
-        console.log("failed");
-        console.error(err);
-      }
-    })();
+    const unsub = listenToDocument("timesheets", docId, id, (doc) =>
+      setTimesheet(doc as Timesheet)
+    );
+    return () => unsub();
   }, [week, account.user]);
 
   return {

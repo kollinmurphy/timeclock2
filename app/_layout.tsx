@@ -2,6 +2,7 @@ import { AuthProvider } from "@hooks/useAccount";
 import { Stack } from "expo-router";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const theme = extendTheme({
   colors: {
@@ -24,7 +25,21 @@ export default function Layout() {
   return (
     <NativeBaseProvider theme={theme}>
       <AuthProvider>
-        <Stack />
+        <SafeAreaView
+          edges={['bottom']}
+          style={{
+            flex: 1,
+            backgroundColor: theme.colors.muted[100],
+          }}
+        >
+          <Stack
+            screenOptions={{
+              contentStyle: {
+                backgroundColor: theme.colors.muted[100],
+              },
+            }}
+          />
+        </SafeAreaView>
       </AuthProvider>
     </NativeBaseProvider>
   );
