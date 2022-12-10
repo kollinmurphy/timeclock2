@@ -1,15 +1,3 @@
-# Expo Router Example
+# Timeclock2
 
-Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
-
-## 🚀 How to use
-
-```sh
-npx create-react-native-app -t with-router
-```
-
-## 📝 Notes
-
-- [Expo Router: Docs](https://expo.github.io/router)
-- [Expo Router: Repo](https://github.com/expo/router)
-- [Request for Comments](https://github.com/expo/router/discussions/1)
+Timeclock2 is a timeclock application for iOS and Android built by Kollin Murphy. It is built using Expo and React Native. It is using a beta version of `expo-router`, as this is not currently meant for production use. It uses Firebase for authentication and data persistence.
