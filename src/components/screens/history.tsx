@@ -3,7 +3,6 @@ import HistoryCard from "@components/HistoryCard";
 import { queryTimesheets } from "@data/firestore";
 import { Timesheet } from "@datatypes/Timesheet";
 import { useAccount } from "@hooks/useAccount";
-import { Stack } from "expo-router";
 import { DocumentSnapshot } from "firebase/firestore";
 import { theme } from "native-base";
 import { useCallback, useEffect, useState } from "react";
@@ -44,7 +43,6 @@ export default function History() {
         marginBottom: theme.space[2],
       }}
     >
-      <Stack.Screen options={{ title: "History" }} />
       <FlatList
         style={{ width: "100%" }}
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}

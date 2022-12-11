@@ -1,10 +1,10 @@
 import ErrorAlert from "@components/ErrorAlert";
-import { Stack, useNavigation } from "expo-router";
+import { signIn } from "@data/auth";
+import { useAccount } from "@hooks/useAccount";
+import { useNavigation } from "@react-navigation/native";
 import { Button, Input, ScrollView, VStack } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
-import { signIn } from "../src/data/auth";
-import { useAccount } from "../src/hooks/useAccount";
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -45,7 +45,6 @@ export default function SignIn() {
     <View style={{ flex: 1, alignItems: "center" }}>
       <ScrollView width="100%" flex={1} px={2}>
         <VStack space={2}>
-          <Stack.Screen options={{ title: "Sign In" }} />
           <Input
             placeholder="Email"
             autoCorrect={false}

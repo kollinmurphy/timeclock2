@@ -1,9 +1,8 @@
-import { Stack } from "expo-router";
+import ErrorAlert from "@components/ErrorAlert";
 import { Button, Input, ScrollView, VStack } from "native-base";
 import React, { useCallback, useState } from "react";
 import { View } from "react-native";
-import ErrorAlert from "../src/components/ErrorAlert";
-import { createAcount } from "../src/data/auth";
+import { createAcount } from "@data/auth";
 
 export default function SignIn() {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
@@ -29,7 +28,6 @@ export default function SignIn() {
     <View style={{ flex: 1, alignItems: "center" }}>
       <ScrollView width="100%" flex={1} px={2}>
         <VStack space={2}>
-          <Stack.Screen options={{ title: "Sign Up" }} />
           <Input
             placeholder="Email"
             autoCorrect={false}

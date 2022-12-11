@@ -4,7 +4,7 @@ import { signOut } from "@data/auth";
 import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { useAccount } from "@hooks/useAccount";
 import useTimesheet from "@hooks/useTimesheet";
-import { Stack, useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { MotiView } from "moti";
 import { Button, Menu, ScrollView, Text, VStack } from "native-base";
 import React, { useEffect } from "react";
@@ -27,7 +27,7 @@ export default function Dashboard() {
 
   return (
     <ScrollView p={3}>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           title: "Timeclock",
           headerRight: (props) => (
@@ -55,7 +55,7 @@ export default function Dashboard() {
             </Menu>
           ),
         }}
-      />
+      /> */}
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: timesheet ? 1 : 0 }}
