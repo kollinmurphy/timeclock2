@@ -12,7 +12,7 @@ import { ActivityIndicator, View } from "react-native";
 export default function Dashboard() {
   const account = useAccount();
   const navigation = useNavigation();
-  const { timesheet, setTimesheet } = useTimesheet();
+  const { timesheet } = useTimesheet();
 
   useEffect(() => {
     if (account.status === "loading") return;
