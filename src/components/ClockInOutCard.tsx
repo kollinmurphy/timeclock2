@@ -1,10 +1,10 @@
 import { clockIn, clockOut } from "@data/firestore";
-import { Timesheet, TimesheetHours } from "@datatypes/Timesheet";
+import { Timesheet, TimesheetHours } from "../types/Timesheet";
 import { useAccount } from "@hooks/useAccount";
 import { Button, View } from "native-base";
 import { useCallback, useMemo } from "react";
 import { Text } from "react-native";
-import { formatDateHHMMAMPM } from "src/utils/dates";
+import { formatDateHHMMAMPM } from "@utils/dates";
 
 export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   const account = useAccount();

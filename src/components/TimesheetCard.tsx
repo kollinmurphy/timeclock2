@@ -1,4 +1,4 @@
-import { Timesheet } from "@datatypes/Timesheet";
+import { Timesheet } from "@types/Timesheet";
 import { differenceInMinutes } from "date-fns";
 import { Heading, View } from "native-base";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -8,7 +8,7 @@ import {
   getStartAndEndFromSort,
   sumHours,
   sumHoursByDay,
-} from "src/utils/dates";
+} from "@utils/dates";
 import TimesheetCardDay from "./TimesheetCardDay";
 
 const daysOfWeek = [

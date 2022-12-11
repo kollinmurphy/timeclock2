@@ -6,7 +6,8 @@
       "@data/*": ["./src/data/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@assets/*": ["./assets/*"],
-      "@datatypes/*": ["./src/types/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@types/*": ["./src/types/*"]
     }
   },
   "extends": "expo/tsconfig.base"

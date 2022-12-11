@@ -1,10 +1,12 @@
-import { AuthProvider } from "@hooks/useAccount";
 import { NavigationContainer } from "@react-navigation/native";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { LogBox } from "react-native";
+import { AuthProvider } from "src/hooks/useAccount";
 import Router from "src/navigation/Router";
 
-LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native core"]);
+LogBox.ignoreLogs([
+  "AsyncStorage has been extracted from react-native"
+])
 
 const theme = extendTheme({
   colors: {

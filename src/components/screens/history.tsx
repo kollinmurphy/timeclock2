@@ -1,12 +1,12 @@
 import AddHours from "@components/AddHours";
 import HistoryCard from "@components/HistoryCard";
 import { queryTimesheets } from "@data/firestore";
-import { Timesheet } from "@datatypes/Timesheet";
 import { useAccount } from "@hooks/useAccount";
 import { DocumentSnapshot } from "firebase/firestore";
 import { theme } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
+import { Timesheet } from "../../types/Timesheet";
 
 export default function History() {
   const account = useAccount();
@@ -25,10 +25,9 @@ export default function History() {
   const handleEndReached = useCallback(() => {
     if (!account.user || timesheets.length === 0) return;
     (async () => {
-      console.log(timesheets.at(-1).snapshot);
       const data: any = await queryTimesheets(
         account.user.uid,
-        timesheets.at(-1).snapshot
+        timesheets[timesheets.length - 1].snapshot
       );
       setTimesheets((t) => [...t, ...data]);
     })();

@@ -5,7 +5,7 @@ import { Button, Modal, theme, View } from "native-base";
 import { useCallback, useState } from "react";
 import { Text } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { formatDateEMMDDYYYY, formatDateHHMMAMPM } from "src/utils/dates";
+import { formatDateEMMDDYYYY, formatDateHHMMAMPM } from "@utils/dates";
 import ErrorAlert from "./ErrorAlert";
 
 export default function AddHoursModal(props: {

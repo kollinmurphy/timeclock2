@@ -1,4 +1,4 @@
-import { Timesheet, TimesheetHours } from "@datatypes/Timesheet";
+import { Timesheet, TimesheetHours } from "@types/Timesheet";
 import { getISOWeek } from "date-fns";
 import {
   addDoc,

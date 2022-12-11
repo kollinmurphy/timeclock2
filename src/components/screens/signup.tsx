@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import { createAcount } from "@data/auth";
 
-export default function SignIn() {
+export default function SignUp() {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
 

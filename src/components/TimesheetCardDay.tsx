@@ -1,15 +1,15 @@
-import { DailySummary, TimesheetHours } from "@datatypes/Timesheet";
+import { DailySummary, TimesheetHours } from "../types/Timesheet";
 import { MotiView } from "moti";
 import { useTheme, View } from "native-base";
 import { useState } from "react";
-import { Pressable, Text } from "react-native";
-import { formatDifferenceShort } from "src/utils/dates";
+import { Platform, Pressable, Text } from "react-native";
+import { formatDifferenceShort } from "@utils/dates";
 import EditHoursModal from "./EditHoursModal";
 import { CurrentShift } from "./TimesheetCard";
 import TimesheetEntry from "./TimesheetEntry";
 
 const COLLAPSED_HEIGHT = 41;
-const HEIGHT_PER_ITEM = 35;
+const HEIGHT_PER_ITEM = Platform.OS === 'ios' ? 35 : 38;
 const BASELINE_EXPANDED_HEIGHT = 12;
 
 export default function TimesheetCardRow({

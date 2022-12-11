@@ -1,11 +1,11 @@
 import { deleteHours, updateHours } from "@data/firestore";
-import { TimesheetHours } from "@datatypes/Timesheet";
+import { TimesheetHours } from "@types/Timesheet";
 import { useAccount } from "@hooks/useAccount";
 import { Button, Modal, View } from "native-base";
 import { useCallback, useMemo, useState } from "react";
 import { Text } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { formatDateHHMMAMPM, formatDateMMDD } from "src/utils/dates";
+import { formatDateHHMMAMPM, formatDateMMDD } from "@utils/dates";
 import ErrorAlert from "./ErrorAlert";
 
 export default function EditHoursModal(props: {

@@ -1,4 +1,4 @@
-import { DailySummary, TimesheetHours } from "@datatypes/Timesheet";
+import { DailySummary, TimesheetHours } from "@types/Timesheet";
 import {
   differenceInMinutes,
   endOfISOWeek,

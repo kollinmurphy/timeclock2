@@ -1,14 +1,13 @@
 import ClockInOutCard from "@components/ClockInOutCard";
 import TimesheetCard from "@components/TimesheetCard";
-import { signOut } from "@data/auth";
-import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useAccount } from "@hooks/useAccount";
 import useTimesheet from "@hooks/useTimesheet";
 import { useNavigation } from "@react-navigation/native";
 import { MotiView } from "moti";
-import { Button, Menu, ScrollView, Text, VStack } from "native-base";
+import { Button, ScrollView, Text, VStack } from "native-base";
 import React, { useEffect } from "react";
-import { ActivityIndicator, Pressable, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export default function Dashboard() {
   const account = useAccount();
@@ -27,35 +26,6 @@ export default function Dashboard() {
 
   return (
     <ScrollView p={3}>
-      {/* <Stack.Screen
-        options={{
-          title: "Timeclock",
-          headerRight: (props) => (
-            <Menu
-              {...props}
-              w="190"
-              trigger={(triggerProps) => (
-                <Pressable
-                  accessibilityLabel="More options menu"
-                  {...triggerProps}
-                  style={({ pressed }) => [
-                    triggerProps.style,
-                    pressed ? { opacity: 0.4, backgroundColor: "gray" } : {},
-                    {
-                      padding: 4,
-                      borderRadius: 20,
-                    },
-                  ]}
-                >
-                  <Entypo name="dots-three-horizontal" size={18} />
-                </Pressable>
-              )}
-            >
-              <Menu.Item onPress={signOut}>Sign Out</Menu.Item>
-            </Menu>
-          ),
-        }}
-      /> */}
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: timesheet ? 1 : 0 }}
