@@ -2,6 +2,7 @@ import { AuthProvider } from "@hooks/useAccount";
 import { Stack } from "expo-router";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import React from "react";
+import { Button, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const theme = extendTheme({
@@ -22,6 +23,11 @@ const theme = extendTheme({
 });
 
 export default function Layout() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Button title='PRESS ME' />
+    </View>
+  )
   return (
     <NativeBaseProvider theme={theme}>
       <AuthProvider>

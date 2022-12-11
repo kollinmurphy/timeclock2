@@ -10,18 +10,23 @@ import {
   DocumentSnapshot,
   getDocs,
   getFirestore,
+  initializeFirestore,
   limit,
   onSnapshot,
   orderBy,
   query,
   setDoc,
+  setLogLevel,
   startAfter,
   updateDoc,
   where,
 } from "firebase/firestore";
 import firebaseApp from "./firebase";
 
-const db = getFirestore(firebaseApp);
+initializeFirestore(firebaseApp, {
+  experimentalForceLongPolling: true,
+});
+const db = getFirestore();
 
 export const createDocument = async (collectionName: string, data: any) => {
   const docRef = await addDoc(collection(db, collectionName), data);
@@ -148,11 +153,15 @@ export const addHours = async (
 ) => {
   const docId = `${userId}_${sort}`;
   const docRef = doc(db, "timesheets", docId);
-  console.log('adding hours')
-  const snap = await getSnapshot("timesheets", docId, userId) as unknown as Timesheet;
-  console.log('snap', snap)
+  console.log("adding hours");
+  const snap = (await getSnapshot(
+    "timesheets",
+    docId,
+    userId
+  )) as unknown as Timesheet;
+  console.log("snap", snap);
   if (!snap) {
-    console.log('creating')
+    console.log("creating");
     const [year, week] = sort.split("-");
     await putDocument("timesheets", docId, {
       userId,
@@ -162,8 +171,9 @@ export const addHours = async (
       hours: [hour],
     });
   } else {
-    if (snap.hours.find((h) => h.start === hour.start)) throw new Error("You already have a shift with this start time");
-    console.log('updating')
+    if (snap.hours.find((h) => h.start === hour.start))
+      throw new Error("You already have a shift with this start time");
+    console.log("updating");
     await updateDoc(docRef, {
       hours: arrayUnion(hour),
     });

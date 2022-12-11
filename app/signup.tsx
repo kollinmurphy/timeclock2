@@ -43,6 +43,7 @@ export default function SignIn() {
             }
             type="password"
             size="xl"
+            autoCapitalize="none"
           />
           <Button
             onPress={handleSignUp}

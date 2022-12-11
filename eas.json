@@ -8,12 +8,25 @@
       "distribution": "internal",
       "ios": {
         "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "ANDROID_SDK_ROOT": "/Users/kollinmurphy/Library/Android/sdk"
       }
     },
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "ANDROID_SDK_ROOT": "/Users/kollinmurphy/Library/Android/sdk"
+      }
+    }
   },
   "submit": {
     "production": {}

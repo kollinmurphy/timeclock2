@@ -2,9 +2,11 @@
   "name": "timeclock",
   "version": "1.0.0",
   "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start:dev": "expo start --dev-client",
-    "start": "eas build --profile development -p ios --local",
+    "start": "expo start --dev-client",
+    "build:dev": "eas build --profile development --local",
+    "build:prod": "eas build --profile production --local",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web"

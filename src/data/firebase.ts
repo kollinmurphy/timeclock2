@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
+import { FirebaseOptions, initializeApp } from "firebase/app";
 
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: "AIzaSyB3-fE-D-hO3fVdat1G-6vjChqrK-dD094",
   authDomain: "timeclock-c36a4.firebaseapp.com",
   projectId: "timeclock-c36a4",

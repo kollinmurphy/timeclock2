@@ -12,13 +12,12 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   const current = useMemo(
     () =>
       props.timesheet.hours.length > 0
-        ? props.timesheet.hours.at(-1).end
+        ? props.timesheet.hours[props.timesheet.hours.length - 1].end
           ? undefined
-          : props.timesheet.hours.at(-1)
+          : props.timesheet.hours[props.timesheet.hours.length - 1]
         : undefined,
     [props.timesheet.hours]
   );
-
   const handleClockIn = useCallback(async () => {
     try {
       const hour: TimesheetHours = {
