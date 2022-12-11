@@ -1,12 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { LogBox } from "react-native";
 import { AuthProvider } from "src/hooks/useAccount";
 import Router from "src/navigation/Router";
 
-LogBox.ignoreLogs([
-  "AsyncStorage has been extracted from react-native"
-])
+LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native"]);
 
 const theme = extendTheme({
   colors: {
@@ -31,6 +30,7 @@ export default function App() {
       <NativeBaseProvider theme={theme}>
         <AuthProvider>
           <Router />
+          <StatusBar style="dark" />
         </AuthProvider>
       </NativeBaseProvider>
     </NavigationContainer>

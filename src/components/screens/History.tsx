@@ -1,37 +1,57 @@
 import AddHours from "@components/AddHours";
 import HistoryCard from "@components/HistoryCard";
-import { queryTimesheets } from "@data/firestore";
+import { queryTimesheetsLive } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
 import { DocumentSnapshot } from "firebase/firestore";
 import { theme } from "native-base";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, FlatList, View } from "react-native";
 import { Timesheet } from "../../types/Timesheet";
 
 export default function History() {
   const account = useAccount();
-  const [timesheets, setTimesheets] = useState<
-    Array<Timesheet & { snapshot: DocumentSnapshot }>
-  >([]);
+
+  const [pages, setPages] = useState<
+    Map<number, Array<Timesheet & { snapshot: DocumentSnapshot }>>
+  >(new Map());
+  const unsubscribers = useRef<Array<() => void>>([]);
 
   useEffect(() => {
     if (!account.user) return;
-    (async () => {
-      const data = await queryTimesheets(account.user.uid);
-      setTimesheets(data as any);
-    })();
+    for (const unsubscribe of unsubscribers.current) unsubscribe();
+    unsubscribers.current = [];
+    setPages(new Map());
+
+    const unsubscribe = queryTimesheetsLive(account.user.uid, (data) => {
+      setPages((p) => {
+        const newPages = new Map(p);
+        newPages.set(0, data);
+        return newPages;
+      });
+    });
+    unsubscribers.current.push(unsubscribe);
   }, [account.user]);
 
   const handleEndReached = useCallback(() => {
-    if (!account.user || timesheets.length === 0) return;
-    (async () => {
-      const data: any = await queryTimesheets(
-        account.user.uid,
-        timesheets[timesheets.length - 1].snapshot
-      );
-      setTimesheets((t) => [...t, ...data]);
-    })();
-  }, [account.user, timesheets]);
+    const lastPage = pages.size - 1;
+    const lastPageSize = pages.get(lastPage)?.length ?? 0;
+    if (!account.user || lastPageSize < 10) return;
+
+    const unsubscribe = queryTimesheetsLive(account.user.uid, (data) => {
+      setPages((p) => {
+        const newPages = new Map(p);
+        newPages.set(lastPage + 1, data);
+        return newPages;
+      });
+    });
+    unsubscribers.current.push(unsubscribe);
+  }, [account.user, pages]);
+
+  const timesheets = useMemo(() => {
+    const timesheets = [];
+    for (const page of pages.values()) timesheets.push(...page);
+    return timesheets;
+  }, [pages]);
 
   return (
     <View
@@ -54,16 +74,7 @@ export default function History() {
         data={timesheets}
         renderItem={({ item }) => <HistoryCard timesheet={item} />}
         ListEmptyComponent={<ActivityIndicator style={{ paddingTop: 24 }} />}
-        ListHeaderComponent={
-          <AddHours
-            onAdd={async () => {
-              console.log("refetching timesheets");
-              const data = await queryTimesheets(account.user.uid);
-              console.log("got em", JSON.stringify(data, null, 2));
-              setTimesheets(data as any);
-            }}
-          />
-        }
+        ListHeaderComponent={<AddHours />}
       />
     </View>
   );

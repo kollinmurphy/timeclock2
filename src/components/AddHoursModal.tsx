@@ -1,17 +1,16 @@
 import { addHours } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
+import { formatDateEMMDDYYYY, formatDateHHMMAMPM } from "@utils/dates";
 import { add, getISOWeek, startOfDay } from "date-fns";
 import { Button, Modal, theme, View } from "native-base";
 import { useCallback, useState } from "react";
 import { Text } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { formatDateEMMDDYYYY, formatDateHHMMAMPM } from "@utils/dates";
 import ErrorAlert from "./ErrorAlert";
 
 export default function AddHoursModal(props: {
   onClose: () => void;
   open: boolean;
-  onAdd: () => void;
 }) {
   const account = useAccount();
   const [day, setDay] = useState<Date>(new Date());
@@ -47,13 +46,12 @@ export default function AddHoursModal(props: {
         end: end.getTime(),
       });
       setError(undefined);
-      props.onAdd();
       props.onClose();
     } catch (err) {
       setError(err.message);
     }
     setLoading(false);
-  }, [props.onClose, account.user, day, start, end, props.onAdd]);
+  }, [props.onClose, account.user, day, start, end]);
 
   return (
     <Modal isOpen={props.open} onClose={handleClose} size="lg">

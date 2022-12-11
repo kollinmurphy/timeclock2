@@ -3,7 +3,7 @@ import { Button, theme, View } from "native-base";
 import { useState } from "react";
 import AddHoursModal from "./AddHoursModal";
 
-export default function AddEntry(props: { onAdd: () => void }) {
+export default function AddEntry() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -22,11 +22,7 @@ export default function AddEntry(props: { onAdd: () => void }) {
       >
         Add Hours
       </Button>
-      <AddHoursModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onAdd={props.onAdd}
-      />
+      <AddHoursModal open={open} onClose={() => setOpen(false)} />
     </View>
   );
 }

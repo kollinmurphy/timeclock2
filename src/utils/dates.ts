@@ -1,22 +1,17 @@
-import { DailySummary, TimesheetHours } from "@types/Timesheet";
-import {
-  differenceInMinutes,
-  endOfISOWeek,
-  format,
-  setISOWeek,
-  startOfISOWeek,
-} from "date-fns";
+import { differenceInMinutes, format, setDay, setISOWeek } from "date-fns";
+import { DailySummary, TimesheetHours } from "../types/Timesheet";
 
 export const formatDate = (date: Date) => format(date, "E MM/dd");
 export const formatDateMMDD = (date: Date) => format(date, "MM/dd");
-export const formatDateEMMDDYYYY = (date: Date) => format(date, "EEE, MMM d, yyyy");
+export const formatDateEMMDDYYYY = (date: Date) =>
+  format(date, "EEE, MMM d, yyyy");
 export const formatDateHHMMAMPM = (date: Date) => format(date, "h:mm aaa");
 
 export const getStartAndEndFromSort = (sort: string) => {
   const [year, isoWeek] = sort.split("-").map((s) => parseInt(s, 10));
   const date = new Date(year, 0, 1);
-  const startDate = startOfISOWeek(setISOWeek(date, isoWeek));
-  const endDate = endOfISOWeek(setISOWeek(date, isoWeek));
+  const startDate = setDay(setISOWeek(date, isoWeek), 0);
+  const endDate = setDay(setISOWeek(date, isoWeek), 6);
   return {
     start: formatDateMMDD(startDate),
     end: formatDateMMDD(endDate),

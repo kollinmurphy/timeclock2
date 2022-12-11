@@ -18,7 +18,6 @@ export default function SignUp() {
     try {
       await createAcount(credentials.email, credentials.password);
     } catch (err) {
-      console.log(err);
       setError(err.message);
     }
     setStatus("idle");

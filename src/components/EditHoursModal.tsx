@@ -1,5 +1,5 @@
 import { deleteHours, updateHours } from "@data/firestore";
-import { TimesheetHours } from "@types/Timesheet";
+import { TimesheetHours } from "../types/Timesheet";
 import { useAccount } from "@hooks/useAccount";
 import { Button, Modal, View } from "native-base";
 import { useCallback, useMemo, useState } from "react";

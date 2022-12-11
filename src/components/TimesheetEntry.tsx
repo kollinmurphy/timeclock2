@@ -1,4 +1,4 @@
-import { TimesheetHours } from "@types/Timesheet";
+import { TimesheetHours } from "../types/Timesheet";
 import { useTheme } from "native-base";
 import { Pressable, Text } from "react-native";
 import { formatDateHHMMAMPM, formatDateMMDD } from "@utils/dates";

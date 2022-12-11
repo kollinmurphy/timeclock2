@@ -1,4 +1,3 @@
-import { Timesheet, TimesheetHours } from "@types/Timesheet";
 import { getISOWeek } from "date-fns";
 import {
   addDoc,
@@ -16,11 +15,11 @@ import {
   orderBy,
   query,
   setDoc,
-  setLogLevel,
   startAfter,
   updateDoc,
   where,
 } from "firebase/firestore";
+import { Timesheet, TimesheetHours } from "../types/Timesheet";
 import firebaseApp from "./firebase";
 
 initializeFirestore(firebaseApp, {
@@ -153,15 +152,12 @@ export const addHours = async (
 ) => {
   const docId = `${userId}_${sort}`;
   const docRef = doc(db, "timesheets", docId);
-  console.log("adding hours");
   const snap = (await getSnapshot(
     "timesheets",
     docId,
     userId
   )) as unknown as Timesheet;
-  console.log("snap", snap);
   if (!snap) {
-    console.log("creating");
     const [year, week] = sort.split("-");
     await putDocument("timesheets", docId, {
       userId,
@@ -173,7 +169,6 @@ export const addHours = async (
   } else {
     if (snap.hours.find((h) => h.start === hour.start))
       throw new Error("You already have a shift with this start time");
-    console.log("updating");
     await updateDoc(docRef, {
       hours: arrayUnion(hour),
     });
@@ -197,4 +192,28 @@ export const queryTimesheets = async (
     id: doc.id,
     snapshot: doc,
   }));
+};
+
+export const queryTimesheetsLive = (
+  userId: string,
+  callback: (data: Array<Timesheet & { snapshot: DocumentSnapshot }>) => void,
+  previousRef?: DocumentSnapshot
+) => {
+  const q = query(
+    collection(db, "timesheets"),
+    where("userId", "==", userId),
+    orderBy("sort", "desc"),
+    limit(10),
+    ...(previousRef ? [startAfter(previousRef)] : [])
+  );
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    return callback(
+      snapshot.docs.map((doc) => ({
+        ...(doc.data() as Omit<Timesheet, "id">),
+        id: doc.id,
+        snapshot: doc,
+      }))
+    );
+  });
+  return unsubscribe;
 };

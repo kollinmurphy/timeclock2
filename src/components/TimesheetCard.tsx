@@ -1,4 +1,4 @@
-import { Timesheet } from "@types/Timesheet";
+import { Timesheet } from "../types/Timesheet";
 import { differenceInMinutes } from "date-fns";
 import { Heading, View } from "native-base";
 import { useEffect, useMemo, useRef, useState } from "react";
