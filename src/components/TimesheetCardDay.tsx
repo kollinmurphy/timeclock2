@@ -19,6 +19,7 @@ export default function TimesheetCardRow({
   currentShift,
   dailyTotals,
   sort,
+  roundedBottom,
 }: {
   sort: string;
   day: { name: string; index: number };
@@ -26,6 +27,7 @@ export default function TimesheetCardRow({
   index: number;
   currentShift: CurrentShift | undefined;
   dailyTotals: Map<number, DailySummary>;
+  roundedBottom?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [editingHours, setEditingHours] = useState<
@@ -41,6 +43,8 @@ export default function TimesheetCardRow({
         borderColor: theme.colors.dark[700],
         borderTopLeftRadius: index === 0 ? theme.radii.xl : undefined,
         borderTopRightRadius: index === 0 ? theme.radii.xl : undefined,
+        borderBottomLeftRadius: roundedBottom ? theme.radii.xl : undefined,
+        borderBottomRightRadius: roundedBottom ? theme.radii.xl : undefined,
         overflow: "hidden",
       }}
       key={day.name}

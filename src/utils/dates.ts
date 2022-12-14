@@ -53,8 +53,8 @@ export const sumHours = (hours: TimesheetHours[]) => {
 };
 
 export const sumHoursByDay = (hours: TimesheetHours[]) => {
-  return hours.reduce((acc: Map<number, DailySummary>, curr) => {
-    const diff = curr.end ? differenceInMinutes(curr.end, curr.start) : 0;
+  const map = hours.reduce((acc: Map<number, DailySummary>, curr) => {
+    const diff = curr.end ? differenceInSeconds(curr.end, curr.start) : 0;
     const day = new Date(curr.start).getDay();
     const current: DailySummary = acc.get(day) || { sum: 0, hours: [] };
     acc.set(day, {
@@ -63,4 +63,7 @@ export const sumHoursByDay = (hours: TimesheetHours[]) => {
     });
     return acc;
   }, new Map());
+  for (const key of map.keys())
+    map.set(key, { ...map.get(key), sum: Math.round(map.get(key).sum / 60) });
+  return map;
 };
