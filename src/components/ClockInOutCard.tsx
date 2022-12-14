@@ -1,7 +1,7 @@
 import { clockIn, clockOut } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
 import { formatDateHHMMAMPM } from "@utils/dates";
-import { Actionsheet, Button, Text, View } from "native-base";
+import { Button, Text, View } from "native-base";
 import { useCallback, useMemo, useState } from "react";
 // import { Text } from "react-native";
 import { Timesheet, TimesheetHours } from "../types/Timesheet";
@@ -10,10 +10,7 @@ import Show from "./Show";
 
 export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   const account = useAccount();
-  const [showClockInSheet, setShowClockInSheet] = useState(false);
   const [showClockInModal, setShowClockInModal] = useState(false);
-
-  const [showClockOutSheet, setShowClockOutSheet] = useState(false);
   const [showClockOutModal, setShowClockOutModal] = useState(false);
 
   const current = useMemo(
@@ -27,7 +24,7 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   );
 
   const handleClockIn = useCallback(async () => {
-    setShowClockInSheet(false);
+    setShowClockInModal(false);
     try {
       const hour: TimesheetHours = {
         day: new Date().getDay(),
@@ -40,7 +37,7 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   }, [account.user]);
 
   const handleClockOut = useCallback(async () => {
-    setShowClockOutSheet(false);
+    setShowClockOutModal(false);
     try {
       const hour: TimesheetHours = {
         ...current,
@@ -51,11 +48,6 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
       console.error(err);
     }
   }, [account.user, current]);
-
-  const handleSelectClockInTime = useCallback(() => {
-    setShowClockInSheet(false);
-    setShowClockInModal(true);
-  }, []);
 
   const handleClockInModal = useCallback(
     (date: number | undefined) => {
@@ -74,11 +66,6 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
     },
     [account.user]
   );
-
-  const handleSelectClockOutTime = useCallback(() => {
-    setShowClockOutSheet(false);
-    setShowClockOutModal(true);
-  }, []);
 
   const handleClockOutModal = useCallback(
     (date: number | undefined) => {
@@ -117,7 +104,7 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
             size="lg"
             colorScheme="emerald"
             onPress={handleClockIn}
-            onLongPress={() => setShowClockInSheet(true)}
+            onLongPress={() => setShowClockInModal(true)}
           >
             Clock In
           </Button>
@@ -127,38 +114,12 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
           size="lg"
           colorScheme="indigo"
           onPress={handleClockOut}
-          onLongPress={() => setShowClockOutSheet(true)}
+          onLongPress={() => setShowClockOutModal(true)}
         >
           Clock Out
         </Button>
       </Show>
-      <Actionsheet
-        isOpen={showClockInSheet}
-        onClose={() => setShowClockInSheet(false)}
-      >
-        <Actionsheet.Content>
-          <Actionsheet.Item onPress={handleClockIn}>
-            Clock in now
-          </Actionsheet.Item>
-          <Actionsheet.Item onPress={handleSelectClockInTime}>
-            Choose clock in time
-          </Actionsheet.Item>
-        </Actionsheet.Content>
-      </Actionsheet>
       <SelectTimeModal open={showClockInModal} onClose={handleClockInModal} />
-      <Actionsheet
-        isOpen={showClockOutSheet}
-        onClose={() => setShowClockOutSheet(false)}
-      >
-        <Actionsheet.Content>
-          <Actionsheet.Item onPress={handleClockOut}>
-            Clock out now
-          </Actionsheet.Item>
-          <Actionsheet.Item onPress={handleSelectClockOutTime}>
-            Choose clock out time
-          </Actionsheet.Item>
-        </Actionsheet.Content>
-      </Actionsheet>
       <SelectTimeModal
         open={showClockOutModal}
         onClose={handleClockOutModal}

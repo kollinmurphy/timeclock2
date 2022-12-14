@@ -5,3 +5,4 @@ Timeclock2 is a React Native / Expo application that allows users to track their
 ## TODO 
 
 - Look into why it's saving two timesheets on open
+- Fix horizontal shadow being cut off on Android
