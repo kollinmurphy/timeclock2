@@ -18,6 +18,7 @@ import {
   startAfter,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { Timesheet, TimesheetHours } from "../types/Timesheet";
 import firebaseApp from "./firebase";
@@ -106,12 +107,15 @@ export const clockOut = async (userId: string, hour: TimesheetHours) => {
   const docRef = doc(db, "timesheets", docId);
   const oldHour = { ...hour };
   delete oldHour.end;
-  await updateDoc(docRef, {
+
+  const batch = writeBatch(db);
+  batch.update(docRef, {
     hours: arrayRemove(oldHour),
   });
-  await updateDoc(docRef, {
+  batch.update(docRef, {
     hours: arrayUnion(hour),
   });
+  await batch.commit();
 };
 
 export const updateHours = async (
@@ -122,15 +126,18 @@ export const updateHours = async (
 ) => {
   const docId = `${userId}_${sort}`;
   const docRef = doc(db, "timesheets", docId);
-  await updateDoc(docRef, {
+
+  const batch = writeBatch(db);
+  batch.update(docRef, {
     hours: arrayRemove(oldHour),
   });
-  await updateDoc(docRef, {
+  batch.update(docRef, {
     hours: arrayUnion({
       ...newHour,
       edited: true,
     }),
   });
+  await batch.commit();
 };
 
 export const deleteHours = async (

@@ -1,4 +1,10 @@
-import { differenceInMinutes, format, setDay, setISOWeek } from "date-fns";
+import {
+  differenceInMinutes,
+  differenceInSeconds,
+  format,
+  setDay,
+  setISOWeek,
+} from "date-fns";
 import { DailySummary, TimesheetHours } from "../types/Timesheet";
 
 export const formatDate = (date: Date) => format(date, "E MM/dd");
@@ -37,11 +43,13 @@ export const formatDifferenceInMinutes = (minutes: number) => {
 };
 
 export const sumHours = (hours: TimesheetHours[]) => {
-  return hours.reduce((acc, curr) => {
-    if (!curr.end) return acc;
-    const diff = differenceInMinutes(curr.end, curr.start);
-    return acc + diff;
-  }, 0);
+  return Math.round(
+    hours.reduce((acc, curr) => {
+      if (!curr.end) return acc;
+      const diff = differenceInSeconds(curr.end, curr.start);
+      return acc + diff;
+    }, 0) / 60
+  );
 };
 
 export const sumHoursByDay = (hours: TimesheetHours[]) => {
