@@ -27,7 +27,6 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
     setShowClockInModal(false);
     try {
       const hour: TimesheetHours = {
-        day: new Date().getDay(),
         start: new Date().getTime(),
       };
       clockIn(account.user.uid, hour);
@@ -55,7 +54,6 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
       if (!date) return;
       try {
         const hour: TimesheetHours = {
-          day: new Date().getDay(),
           start: date,
           edited: true,
         };
@@ -86,7 +84,7 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   );
 
   return (
-    <View p={4} rounded="xl" bg="light.50" shadow="2">
+    <View m={3} mb={0} p={4} rounded="xl" bg="light.50" shadow="2">
       <Text
         style={{
           fontSize: 16,

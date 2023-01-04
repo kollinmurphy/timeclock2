@@ -5,7 +5,7 @@ import { useAccount } from "@hooks/useAccount";
 import useTimesheet from "@hooks/useTimesheet";
 import { useNavigation } from "@react-navigation/native";
 import { MotiView } from "moti";
-import { Button, ScrollView, Text, VStack } from "native-base";
+import { Button, ScrollView, Text, theme, VStack } from "native-base";
 import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 
@@ -25,7 +25,7 @@ export default function Dashboard() {
   }, [account]);
 
   return (
-    <ScrollView p={3}>
+    <ScrollView>
       <MotiView
         from={{ opacity: 0 }}
         animate={{ opacity: timesheet ? 1 : 0 }}
@@ -44,11 +44,13 @@ export default function Dashboard() {
                 colorScheme="emerald"
                 onPress={() => navigation.navigate("history" as never)}
                 marginBottom={3}
+                mx={3}
               >
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
+                    marginVertical: theme.space[1],
                   }}
                 >
                   <FontAwesome5 name="history" size={14} color="green" />

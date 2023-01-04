@@ -1,26 +1,25 @@
 import {
+  add,
   differenceInMinutes,
   differenceInSeconds,
   format,
-  setDay,
-  setISOWeek,
 } from "date-fns";
 import { DailySummary, TimesheetHours } from "../types/Timesheet";
 
-export const formatDate = (date: Date) => format(date, "E MM/dd");
-export const formatDateMMDD = (date: Date) => format(date, "MM/dd");
+export const formatSort = (date: Date) => format(date, "yyyy-MM-dd");
+export const formatDate = (date: Date) => format(date, "E, M/d");
+export const formatDateMMDD = (date: Date) => format(date, "M/d");
 export const formatDateEMMDDYYYY = (date: Date) =>
   format(date, "EEE, MMM d, yyyy");
 export const formatDateHHMMAMPM = (date: Date) => format(date, "h:mm aaa");
 
 export const getStartAndEndFromSort = (sort: string) => {
-  const [year, isoWeek] = sort.split("-").map((s) => parseInt(s, 10));
-  const date = new Date(year, 0, 1);
-  const startDate = setDay(setISOWeek(date, isoWeek), 0);
-  const endDate = setDay(setISOWeek(date, isoWeek), 6);
+  const [year, month, day] = sort.split("-").map((s) => parseInt(s, 10));
+  const date = new Date(year, month - 1, day);
+  const endDate = add(date, { days: 6 });
   return {
-    start: formatDateMMDD(startDate),
-    end: formatDateMMDD(endDate),
+    start: date,
+    end: endDate,
   };
 };
 
@@ -55,7 +54,7 @@ export const sumHours = (hours: TimesheetHours[]) => {
 export const sumHoursByDay = (hours: TimesheetHours[]) => {
   const map = hours.reduce((acc: Map<number, DailySummary>, curr) => {
     const diff = curr.end ? differenceInSeconds(curr.end, curr.start) : 0;
-    const day = new Date(curr.start).getDay();
+    const day = (new Date(curr.start).getDay() + 1) % 7;
     const current: DailySummary = acc.get(day) || { sum: 0, hours: [] };
     acc.set(day, {
       sum: current.sum + diff,
@@ -64,6 +63,6 @@ export const sumHoursByDay = (hours: TimesheetHours[]) => {
     return acc;
   }, new Map());
   for (const key of map.keys())
-    map.set(key, { ...map.get(key), sum: Math.round(map.get(key).sum / 60) });
+  map.set(key, { ...map.get(key), sum: Math.round(map.get(key).sum / 60) });
   return map;
 };

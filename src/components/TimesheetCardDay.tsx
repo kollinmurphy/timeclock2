@@ -1,15 +1,15 @@
-import { DailySummary, TimesheetHours } from "../types/Timesheet";
+import { formatDifferenceShort } from "@utils/dates";
 import { MotiView } from "moti";
 import { useTheme, View } from "native-base";
 import { useState } from "react";
 import { Platform, Pressable, Text } from "react-native";
-import { formatDifferenceShort } from "@utils/dates";
+import { DailySummary, TimesheetHours } from "../types/Timesheet";
 import EditHoursModal from "./EditHoursModal";
 import { CurrentShift } from "./TimesheetCard";
 import TimesheetEntry from "./TimesheetEntry";
 
 const COLLAPSED_HEIGHT = 41;
-const HEIGHT_PER_ITEM = Platform.OS === 'ios' ? 35 : 38;
+const HEIGHT_PER_ITEM = Platform.OS === "ios" ? 35 : 38;
 const BASELINE_EXPANDED_HEIGHT = 12;
 
 export default function TimesheetCardRow({
@@ -20,6 +20,7 @@ export default function TimesheetCardRow({
   dailyTotals,
   sort,
   roundedBottom,
+  label,
 }: {
   sort: string;
   day: { name: string; index: number };
@@ -28,6 +29,7 @@ export default function TimesheetCardRow({
   currentShift: CurrentShift | undefined;
   dailyTotals: Map<number, DailySummary>;
   roundedBottom?: boolean;
+  label: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [editingHours, setEditingHours] = useState<
@@ -87,7 +89,7 @@ export default function TimesheetCardRow({
               fontWeight: "bold",
             }}
           >
-            {day.name}
+            {label}
           </Text>
           <Text>
             {currentShift?.day === day.index

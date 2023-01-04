@@ -3,7 +3,7 @@ import { Button, theme, View } from "native-base";
 import { useState } from "react";
 import AddHoursModal from "./AddHoursModal";
 
-export default function AddEntry() {
+export default function AddHours() {
   const [open, setOpen] = useState(false);
 
   return (

@@ -1,5 +1,5 @@
-import { formatDifferenceShort, sumHours, sumHoursByDay } from "@utils/dates";
-import { differenceInMinutes } from "date-fns";
+import { formatDate, formatDifferenceShort, sumHours, sumHoursByDay } from "@utils/dates";
+import { add, differenceInMinutes } from "date-fns";
 import { View } from "native-base";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Text } from "react-native";
@@ -23,6 +23,7 @@ export type CurrentShift = {
 export default function TimesheetTable(props: {
   timesheet: Timesheet;
   showTotal: boolean;
+  startDate: Date;
 }) {
   const timerRef = useRef<any>();
   const [clockedIn, setClockedIn] = useState(false);
@@ -49,7 +50,7 @@ export default function TimesheetTable(props: {
     () =>
       current?.start
         ? {
-            day: current.day,
+            day: new Date(current.start).getDay(),
             minutes: differenceInMinutes(new Date(), current.start),
           }
         : undefined
@@ -60,7 +61,7 @@ export default function TimesheetTable(props: {
     timerRef.current = setInterval(() => {
       const mins = differenceInMinutes(new Date(), current.start);
       setCurrentShift({
-        day: current.day,
+        day: new Date(current.start).getDay(),
         minutes: mins,
       });
     }, 1000);
@@ -84,6 +85,7 @@ export default function TimesheetTable(props: {
           <TimesheetCardDay
             key={index}
             day={day}
+            label={formatDate(add(props.startDate, { days: index }))}
             dailyTotals={dailyTotals}
             currentShift={currentShift}
             clockedIn={clockedIn}

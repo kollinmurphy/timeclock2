@@ -1,7 +1,7 @@
 import { addHours } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
-import { formatDateEMMDDYYYY, formatDateHHMMAMPM } from "@utils/dates";
-import { add, getISOWeek, startOfDay } from "date-fns";
+import { formatDateEMMDDYYYY, formatDateHHMMAMPM, formatSort } from "@utils/dates";
+import { add, startOfDay, startOfWeek } from "date-fns";
 import { Button, Modal, theme, View } from "native-base";
 import { useCallback, useState } from "react";
 import { Text } from "react-native";
@@ -39,9 +39,8 @@ export default function AddHoursModal(props: {
     setError(undefined);
     try {
       setLoading(true);
-      const sort = `${day.getFullYear()}-${getISOWeek(day)}`;
+      const sort = formatSort(startOfWeek(day));
       await addHours(account.user.uid, sort, {
-        day: day.getDay(),
         start: start.getTime(),
         end: end.getTime(),
       });

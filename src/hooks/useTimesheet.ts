@@ -1,32 +1,30 @@
-import { getISOWeek } from "date-fns";
+import { formatSort } from "@utils/dates";
+import { startOfWeek } from "date-fns";
 import { useEffect, useState } from "react";
 import { listenToDocument, putDocument } from "../data/firestore";
 import { Timesheet } from "../types/Timesheet";
 import { useAccount } from "./useAccount";
 
-export default function useTimesheet(week?: number, year?: number) {
+export default function useTimesheet() {
   const account = useAccount();
   const [timesheet, setTimesheet] = useState<Timesheet | null>(null);
 
   useEffect(() => {
-    let localWeek = week ?? getISOWeek(new Date());
-    let localYear = year ?? new Date().getFullYear();
+    const sort = formatSort(startOfWeek(new Date()));
     const id = account.user?.uid;
     if (!id) return;
-    const docId = `${id}_${localYear}-${localWeek}`;
+    const docId = `${id}_${sort}`;
     const unsub = listenToDocument("timesheets", docId, id, (doc) => {
       setTimesheet(doc as Timesheet);
       if (!doc)
         putDocument("timesheets", docId, {
           userId: id,
-          sort: `${localYear}-${localWeek}`,
-          week: localWeek,
-          year: localYear,
+          sort,
           hours: [],
         });
     });
     return () => unsub();
-  }, [week, account.user]);
+  }, [account.user]);
 
   return {
     timesheet,

@@ -1,4 +1,5 @@
 import {
+  formatDateMMDD,
   formatDifferenceShort,
   getStartAndEndFromSort,
   sumHours,
@@ -73,14 +74,27 @@ export default function HistoryCard(props: { timesheet: Timesheet }) {
               }}
             >
               <Heading size="md">
-                {dates.start} - {dates.end}
+                {formatDateMMDD(dates.start)} - {formatDateMMDD(dates.end)}
               </Heading>
               <Heading size="md">{total}</Heading>
             </View>
 
-            <View mt={3}>
-              <ScrollView>
-                <TimesheetTable timesheet={props.timesheet} showTotal={false} />
+            <View
+              mt={3}
+              style={{
+                flex: 1,
+              }}
+            >
+              <ScrollView
+                style={{
+                  flex: 1,
+                }}
+              >
+                <TimesheetTable
+                  timesheet={props.timesheet}
+                  showTotal={false}
+                  startDate={dates.start}
+                />
               </ScrollView>
             </View>
           </MotiView>

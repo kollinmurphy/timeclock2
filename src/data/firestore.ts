@@ -1,4 +1,5 @@
-import { getISOWeek } from "date-fns";
+import { formatSort } from "@utils/dates";
+import { startOfWeek } from "date-fns";
 import {
   addDoc,
   arrayRemove,
@@ -91,9 +92,8 @@ export const getSnapshot = async (
 };
 
 export const clockIn = async (userId: string, hour: TimesheetHours) => {
-  const weekId = getISOWeek(new Date());
-  const year = new Date().getFullYear();
-  const docId = `${userId}_${year}-${weekId}`;
+  const sort = formatSort(startOfWeek(new Date()));
+  const docId = `${userId}_${sort}`;
   const docRef = doc(db, "timesheets", docId);
   await updateDoc(docRef, {
     hours: arrayUnion(hour),
@@ -101,9 +101,8 @@ export const clockIn = async (userId: string, hour: TimesheetHours) => {
 };
 
 export const clockOut = async (userId: string, hour: TimesheetHours) => {
-  const weekId = getISOWeek(new Date());
-  const year = new Date().getFullYear();
-  const docId = `${userId}_${year}-${weekId}`;
+  const sort = formatSort(startOfWeek(new Date()));
+  const docId = `${userId}_${sort}`;
   const docRef = doc(db, "timesheets", docId);
   const oldHour = { ...hour };
   delete oldHour.end;
@@ -165,12 +164,13 @@ export const addHours = async (
     userId
   )) as unknown as Timesheet;
   if (!snap) {
-    const [year, week] = sort.split("-");
+    const [year, month, day] = sort.split("-");
     await putDocument("timesheets", docId, {
       userId,
       sort,
       year,
-      week,
+      month,
+      day,
       hours: [hour],
     });
   } else {
