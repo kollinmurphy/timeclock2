@@ -1,17 +1,34 @@
+import ContinueAsGuestButton from "@components/ContinueAsGuest";
 import ErrorAlert from "@components/ErrorAlert";
-import { Button, Input, ScrollView, VStack } from "native-base";
-import React, { useCallback, useState } from "react";
-import { View } from "react-native";
 import { createAcount } from "@data/auth";
+import { useAccount } from "@hooks/useAccount";
+import { useNavigation } from "@react-navigation/native";
+import { Button, Heading, Input, ScrollView, Text, VStack } from "native-base";
+import React, { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
 
 export default function SignUp() {
+  const navigation = useNavigation();
+  const account = useAccount();
+
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (account.user) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "dashboard" as never }],
+      });
+    }
+  }, [account.user]);
 
   const handleSignUp = useCallback(async () => {
     setStatus("loading");
@@ -23,15 +40,51 @@ export default function SignUp() {
     setStatus("idle");
   }, [credentials]);
 
+  const navigateToSignIn = useCallback(
+    () => navigation.navigate("signin" as never),
+    []
+  );
+
+  const handleEmailBlur = useCallback(() => {
+    setTimeout(() => setEmailFocused(false), 100);
+  }, []);
+
+  const handlePasswordBlur = useCallback(() => {
+    setTimeout(() => setPasswordFocused(false), 100);
+  }, []);
+
+  const handleEmailFocus = useCallback(() => setEmailFocused(true), []);
+
+  const handlePasswordFocus = useCallback(() => setPasswordFocused(true), []);
+
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
-      <ScrollView width="100%" flex={1} px={2}>
-        <VStack space={2}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "column",
+        position: "relative",
+      }}
+    >
+      <ScrollView width="100%" flex={1} p={4}>
+        <VStack space={3} flex={1}>
+          <Heading>Welcome to Timeclock!</Heading>
+          <Text fontSize="md">
+            Timeclock is a simple time tracking app that helps you keep track of
+            your time.
+          </Text>
+          <Text fontSize="md">
+            To get started, please create an account or sign in if you already
+            have one.
+          </Text>
           <Input
             placeholder="Email"
             autoCorrect={false}
+            autoCapitalize="none"
             onChangeText={(email) => setCredentials((c) => ({ ...c, email }))}
             size="xl"
+            onFocus={handleEmailFocus}
+            onBlur={handleEmailBlur}
           />
           <Input
             placeholder="Password"
@@ -41,6 +94,8 @@ export default function SignUp() {
             type="password"
             size="xl"
             autoCapitalize="none"
+            onFocus={handlePasswordFocus}
+            onBlur={handlePasswordBlur}
           />
           <Button
             onPress={handleSignUp}
@@ -50,9 +105,28 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            onPress={navigateToSignIn}
+            disabled={status === "loading"}
+          >
+            Sign In Instead
+          </Button>
           <ErrorAlert error={error} />
         </VStack>
       </ScrollView>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          padding: 10,
+          display: emailFocused || passwordFocused ? "none" : "flex",
+        }}
+      >
+        <ContinueAsGuestButton />
+      </View>
     </View>
   );
 }

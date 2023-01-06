@@ -1,4 +1,5 @@
 import OptionsMenu from "@components/OptionsMenu";
+import CreateAccountFromAnonymous from "@components/screens/CreateAccountFromAnonymous";
 import Dashboard from "@components/screens/Dashboard";
 import History from "@components/screens/History";
 import Home from "@components/screens/Home";
@@ -37,7 +38,7 @@ export default function Router() {
         name="signup"
         component={SignUp}
         options={{
-          headerTitle: "Sign Up",
+          headerTitle: "Timeclock",
         }}
       />
       <Stack.Screen
@@ -45,6 +46,13 @@ export default function Router() {
         component={History}
         options={{
           headerTitle: "History",
+        }}
+      />
+      <Stack.Screen
+        name="anonymoussignup"
+        component={CreateAccountFromAnonymous}
+        options={{
+          headerTitle: "Create Account",
         }}
       />
     </Stack.Navigator>

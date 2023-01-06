@@ -17,7 +17,7 @@ export default function Home() {
     } else {
       navigation.reset({
         index: 0,
-        routes: [{ name: "signin" as never }],
+        routes: [{ name: "signup" as never }],
       });
     }
   }, [account]);
