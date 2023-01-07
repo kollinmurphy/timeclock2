@@ -1,7 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { extendTheme, NativeBaseProvider } from "native-base";
+import { useEffect } from "react";
 import { LogBox } from "react-native";
+import mobileAds from "react-native-google-mobile-ads";
 import { AuthProvider } from "src/hooks/useAccount";
 import Router from "src/navigation/Router";
 
@@ -25,6 +27,9 @@ const theme = extendTheme({
 });
 
 export default function App() {
+  useEffect(() => {
+    mobileAds().initialize();
+  }, []);
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>

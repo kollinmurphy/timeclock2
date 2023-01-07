@@ -1,4 +1,5 @@
 import AnonymousSignInCard from "@components/AnonymousSignInCard";
+import BannerAd from "@components/BannerAd";
 import ClockInOutCard from "@components/ClockInOutCard";
 import Show from "@components/Show";
 import TimesheetCard from "@components/TimesheetCard";
@@ -28,60 +29,72 @@ export default function Dashboard() {
   }, [account]);
 
   return (
-    <Show
-      when={timesheet}
-      fallback={
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator />
-        </View>
-      }
+    <View
+      style={{
+        flex: 1,
+      }}
     >
-      <ScrollView>
-        <MotiView
-          from={{ opacity: 0 }}
-          animate={{ opacity: timesheet ? 1 : 0 }}
-          transition={{
-            type: "timing",
-            duration: 350,
+      <Show
+        when={timesheet}
+        fallback={
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <ActivityIndicator />
+          </View>
+        }
+      >
+        <ScrollView
+          style={{
+            flex: 1,
           }}
         >
-          <View>
-            {timesheet && (
-              <VStack space={3}>
-                <AnonymousSignInCard />
-                <ClockInOutCard timesheet={timesheet} />
-                <TimesheetCard timesheet={timesheet} />
-                <Button
-                  variant="ghost"
-                  colorScheme="emerald"
-                  onPress={() => navigation.navigate("history" as never)}
-                  marginBottom={3}
-                  mx={3}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginVertical: theme.space[1],
-                    }}
+          <MotiView
+            from={{ opacity: 0 }}
+            animate={{ opacity: timesheet ? 1 : 0 }}
+            transition={{
+              type: "timing",
+              duration: 350,
+            }}
+          >
+            <View>
+              {timesheet && (
+                <VStack space={3}>
+                  <AnonymousSignInCard />
+                  <ClockInOutCard timesheet={timesheet} />
+                  <TimesheetCard timesheet={timesheet} />
+                  <Button
+                    variant="ghost"
+                    colorScheme="emerald"
+                    onPress={() => navigation.navigate("history" as never)}
+                    marginBottom={3}
+                    mx={3}
                   >
-                    <FontAwesome5
-                      name="history"
-                      size={14}
-                      color={theme.colors.emerald[700]}
-                    />
-                    <Text ml={2} color="emerald.700">
-                      View History
-                    </Text>
-                  </View>
-                </Button>
-              </VStack>
-            )}
-          </View>
-        </MotiView>
-      </ScrollView>
-    </Show>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginVertical: theme.space[1],
+                      }}
+                    >
+                      <FontAwesome5
+                        name="history"
+                        size={14}
+                        color={theme.colors.emerald[700]}
+                      />
+                      <Text ml={2} color="emerald.700">
+                        View History
+                      </Text>
+                    </View>
+                  </Button>
+                </VStack>
+              )}
+            </View>
+          </MotiView>
+        </ScrollView>
+      </Show>
+
+      <BannerAd />
+    </View>
   );
 }

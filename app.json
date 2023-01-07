@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ClockWork",
-    "slug": "clockwork",
+    "slug": "timeclock2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,6 +30,21 @@
       "eas": {
         "projectId": "5e1f05bd-e582-4a08-993e-e674c312cfe0"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ]
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-7143283411955031~6480244914",
+    "ios_app_id": "ca-app-pub-7143283411955031~4563709772",
+    "user_tracking_usage_description": "This identifier will be used to deliver personalized ads to you."
   }
 }
