@@ -35,7 +35,6 @@ export default function TimesheetCardRow({
   const [editingHours, setEditingHours] = useState<
     TimesheetHours | undefined
   >();
-  const currentDay = new Date().getDay();
   const theme = useTheme();
 
   return (

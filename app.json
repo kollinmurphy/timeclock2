@@ -17,10 +17,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.canlin.clockwork"
+      "bundleIdentifier": "com.kollinmurphy.clockwork"
     },
     "android": {
-      "package": "com.canlin.clockwork",
+      "package": "com.kollinmurphy.clockwork",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

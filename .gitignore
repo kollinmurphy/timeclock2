@@ -16,3 +16,5 @@ web-build/
 *.tar.gz
 *.app
 *.apk
+*.aab
+*.ipa

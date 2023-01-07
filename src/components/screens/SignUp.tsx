@@ -6,10 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 import { Button, Heading, Input, ScrollView, Text, VStack } from "native-base";
 import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SignUp() {
   const navigation = useNavigation();
   const account = useAccount();
+  const insets = useSafeAreaInsets();
 
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -122,7 +124,9 @@ export default function SignUp() {
           bottom: 0,
           width: "100%",
           padding: 10,
+          paddingBottom: 0,
           display: emailFocused || passwordFocused ? "none" : "flex",
+          marginBottom: insets.bottom,
         }}
       >
         <ContinueAsGuestButton />
