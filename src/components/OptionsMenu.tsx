@@ -1,11 +1,14 @@
 import { signOut } from "@data/auth";
 import { Entypo } from "@expo/vector-icons";
+import { useAccount } from "@hooks/useAccount";
 import { Menu } from "native-base";
 import { useCallback, useState } from "react";
 import { Pressable } from "react-native";
 import DeleteAccountModal from "./DeleteAccountModal";
+import Show from "./Show";
 
 export default function OptionsMenu() {
+  const account = useAccount();
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   const toggleModal = useCallback(() => {
@@ -33,7 +36,9 @@ export default function OptionsMenu() {
           </Pressable>
         )}
       >
-        <Menu.Item onPress={signOut}>Sign Out</Menu.Item>
+        <Show when={!account.anonymous}>
+          <Menu.Item onPress={signOut}>Sign Out</Menu.Item>
+        </Show>
         <Menu.Item onPress={toggleModal}>Delete Account</Menu.Item>
       </Menu>
       <DeleteAccountModal

@@ -1,5 +1,10 @@
-import { formatDate, formatDifferenceShort, sumHours, sumHoursByDay } from "@utils/dates";
-import { add, differenceInMinutes } from "date-fns";
+import {
+  formatDate,
+  formatDifferenceShort,
+  sumHours,
+  sumHoursByDay,
+} from "@utils/dates";
+import { add, differenceInMinutes, isToday } from "date-fns";
 import { View } from "native-base";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Text } from "react-native";
@@ -88,7 +93,9 @@ export default function TimesheetTable(props: {
             label={formatDate(add(props.startDate, { days: index }))}
             dailyTotals={dailyTotals}
             currentShift={currentShift}
-            clockedIn={clockedIn}
+            clockedIn={
+              clockedIn && isToday(add(props.startDate, { days: index }))
+            }
             index={index}
             sort={props.timesheet.sort}
             roundedBottom={

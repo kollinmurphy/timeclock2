@@ -68,9 +68,9 @@ export default function SignUp() {
     >
       <ScrollView width="100%" flex={1} p={4}>
         <VStack space={3} flex={1}>
-          <Heading>Welcome to Timeclock!</Heading>
+          <Heading>Welcome to ClockWork!</Heading>
           <Text fontSize="md">
-            Timeclock is a simple time tracking app that helps you keep track of
+            ClockWork is a simple time tracking app that helps you keep track of
             your time.
           </Text>
           <Text fontSize="md">

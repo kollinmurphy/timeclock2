@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Timeclock",
-    "slug": "timeclock2",
+    "name": "ClockWork",
+    "slug": "clockwork",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,10 +17,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.canlin.timeclock2"
+      "bundleIdentifier": "com.canlin.clockwork"
     },
     "android": {
-      "package": "com.canlin.timeclock2",
+      "package": "com.canlin.clockwork",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

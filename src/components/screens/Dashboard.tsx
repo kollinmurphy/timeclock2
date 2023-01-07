@@ -7,11 +7,12 @@ import { useAccount } from "@hooks/useAccount";
 import useTimesheet from "@hooks/useTimesheet";
 import { useNavigation } from "@react-navigation/native";
 import { MotiView } from "moti";
-import { Button, ScrollView, Text, theme, VStack } from "native-base";
+import { Button, ScrollView, Text, useTheme, VStack } from "native-base";
 import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 
 export default function Dashboard() {
+  const theme = useTheme();
   const account = useAccount();
   const navigation = useNavigation();
   const { timesheet } = useTimesheet();
@@ -66,7 +67,11 @@ export default function Dashboard() {
                       marginVertical: theme.space[1],
                     }}
                   >
-                    <FontAwesome5 name="history" size={14} color="green" />
+                    <FontAwesome5
+                      name="history"
+                      size={14}
+                      color={theme.colors.emerald[700]}
+                    />
                     <Text ml={2} color="emerald.700">
                       View History
                     </Text>

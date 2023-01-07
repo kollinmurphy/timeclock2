@@ -30,6 +30,11 @@ export default function History() {
       });
     });
     unsubscribers.current.push(unsubscribe);
+
+    return () => {
+      for (const unsubscribe of unsubscribers.current) unsubscribe();
+      unsubscribers.current = [];
+    };
   }, [account.user]);
 
   const handleEndReached = useCallback(() => {

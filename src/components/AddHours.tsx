@@ -13,12 +13,15 @@ export default function AddHours() {
       }}
     >
       <Button
-        colorScheme="indigo"
+        colorScheme="emerald"
         variant="ghost"
         onPress={() => setOpen(true)}
         leftIcon={
-          <Ionicons name="add" size={22} color={theme.colors.indigo[500]} />
+          <Ionicons name="add" size={22} color={theme.colors.emerald[700]} />
         }
+        _text={{
+          color: "emerald.700",
+        }}
       >
         Add Hours
       </Button>

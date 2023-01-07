@@ -55,10 +55,9 @@ export default function TimesheetCardRow({
         height: COLLAPSED_HEIGHT,
       }}
       animate={{
-        backgroundColor:
-          day.index === currentDay && clockedIn
-            ? theme.colors.emerald[100]
-            : theme.colors.light[50],
+        backgroundColor: clockedIn
+          ? theme.colors.emerald[100]
+          : theme.colors.light[50],
         height: expanded
           ? COLLAPSED_HEIGHT +
             HEIGHT_PER_ITEM * (dailyTotals.get(day.index)?.hours.length || 1) +
@@ -92,7 +91,7 @@ export default function TimesheetCardRow({
             {label}
           </Text>
           <Text>
-            {currentShift?.day === day.index
+            {clockedIn && currentShift
               ? formatDifferenceShort(
                   (dailyTotals.get(day.index)?.sum ?? 0) + currentShift.minutes
                 )

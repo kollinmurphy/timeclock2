@@ -1,4 +1,5 @@
 import ErrorAlert from "@components/ErrorAlert";
+import ForgotPasswordModal from "@components/ForgotPasswordModal";
 import { signIn } from "@data/auth";
 import { Button, Input, ScrollView, VStack } from "native-base";
 import { useCallback, useState } from "react";
@@ -7,6 +8,7 @@ import { View } from "react-native";
 export default function SignIn() {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -22,6 +24,11 @@ export default function SignIn() {
     }
     setStatus("idle");
   }, [credentials]);
+
+  const toggleForgotPassword = useCallback(
+    () => setShowForgotPassword((s) => !s),
+    []
+  );
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
@@ -51,7 +58,20 @@ export default function SignIn() {
           >
             Sign In
           </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            onPress={toggleForgotPassword}
+            disabled={status === "loading"}
+          >
+            Forgot Password?
+          </Button>
           <ErrorAlert error={error} />
+          <ForgotPasswordModal
+            visible={showForgotPassword}
+            onDismiss={toggleForgotPassword}
+            email={credentials.email}
+          />
         </VStack>
       </ScrollView>
     </View>

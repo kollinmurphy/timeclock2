@@ -16,14 +16,14 @@ export default function Router() {
         name="home"
         component={Home}
         options={{
-          headerTitle: "Timeclock",
+          headerTitle: "ClockWork",
         }}
       />
       <Stack.Screen
         name="dashboard"
         component={Dashboard}
         options={{
-          headerTitle: "Timeclock",
+          headerTitle: "ClockWork",
           headerRight: () => <OptionsMenu />,
         }}
       />
@@ -38,7 +38,7 @@ export default function Router() {
         name="signup"
         component={SignUp}
         options={{
-          headerTitle: "Timeclock",
+          headerTitle: "ClockWork",
         }}
       />
       <Stack.Screen

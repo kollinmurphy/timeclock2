@@ -5,6 +5,7 @@ import {
   getAuth,
   linkWithCredential,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
   signInAnonymously,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -94,6 +95,22 @@ export const deleteAccount = async (password: string) => {
       switch (err.code) {
         case "auth/wrong-password":
           throw new Error("Wrong password");
+        default:
+          throw new Error("Something went wrong");
+      }
+    }
+    throw new Error("Something went wrong");
+  }
+};
+
+export const resetPassword = async (email: string) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (err) {
+    if (err instanceof FirebaseError) {
+      switch (err.code) {
+        case "auth/user-not-found":
+          throw new Error("User not found");
         default:
           throw new Error("Something went wrong");
       }

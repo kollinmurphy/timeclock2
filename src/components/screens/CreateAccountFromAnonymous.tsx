@@ -21,7 +21,7 @@ export default function CreateAccountFromAnonymous() {
   const handleSignUp = useCallback(async () => {
     setStatus("loading");
     try {
-      const acc = await linkCredential(credentials.email, credentials.password);
+      await linkCredential(credentials.email, credentials.password);
       setStatus("success");
       account.setAnonymous(false);
     } catch (err) {
