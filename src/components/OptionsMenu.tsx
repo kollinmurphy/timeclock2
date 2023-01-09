@@ -4,16 +4,23 @@ import { useAccount } from "@hooks/useAccount";
 import { Menu } from "native-base";
 import { useCallback, useState } from "react";
 import { Pressable } from "react-native";
+import ChangePasswordModal from "./ChangePasswordModal";
 import DeleteAccountModal from "./DeleteAccountModal";
 import Show from "./Show";
 
 export default function OptionsMenu() {
   const account = useAccount();
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+  const [showChangePasswordModal, setShowPasswordModal] = useState(false);
 
-  const toggleModal = useCallback(() => {
+  const toggleDeleteModal = useCallback(() => {
     setShowDeleteAccountModal((show) => !show);
   }, []);
+
+  const toggleChangePasswordModal = useCallback(
+    () => setShowPasswordModal((s) => !s),
+    []
+  );
 
   return (
     <>
@@ -38,12 +45,19 @@ export default function OptionsMenu() {
       >
         <Show when={!account.anonymous}>
           <Menu.Item onPress={signOut}>Sign Out</Menu.Item>
+          <Menu.Item onPress={toggleChangePasswordModal}>
+            Change Password
+          </Menu.Item>
         </Show>
-        <Menu.Item onPress={toggleModal}>Delete Account</Menu.Item>
+        <Menu.Item onPress={toggleDeleteModal}>Delete Account</Menu.Item>
       </Menu>
       <DeleteAccountModal
         visible={showDeleteAccountModal}
-        onDismiss={toggleModal}
+        onDismiss={toggleDeleteModal}
+      />
+      <ChangePasswordModal
+        visible={showChangePasswordModal}
+        onDismiss={toggleChangePasswordModal}
       />
     </>
   );

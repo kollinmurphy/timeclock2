@@ -2,9 +2,9 @@
 
 ClockWork is a React Native / Expo application that allows users to track their time. It uses Firebase as a backend.
 
-## TODO 
+## TODO
 
 - Handle shift running between days
 - Handle shift running between weeks
-- Reset password
-- Ads
+- Test changing password
+- Set up Google Analytics

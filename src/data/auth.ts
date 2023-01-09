@@ -8,8 +8,10 @@ import {
   sendPasswordResetEmail,
   signInAnonymously,
   signInWithEmailAndPassword,
+  updatePassword,
 } from "firebase/auth";
 import firebaseApp from "./firebase";
+import { batchDelete, fetchAllTimesheets } from "./firestore";
 
 export const auth = getAuth(firebaseApp);
 
@@ -89,6 +91,8 @@ export const deleteAccount = async (password: string) => {
     }
     const credential = EmailAuthProvider.credential(user.email, password);
     await reauthenticateWithCredential(user, credential);
+    const timesheets = await fetchAllTimesheets(user.uid);
+    await batchDelete(timesheets.map((t) => t.id));
     await user.delete();
   } catch (err) {
     if (err instanceof FirebaseError) {
@@ -111,6 +115,25 @@ export const resetPassword = async (email: string) => {
       switch (err.code) {
         case "auth/user-not-found":
           throw new Error("User not found");
+        default:
+          throw new Error("Something went wrong");
+      }
+    }
+    throw new Error("Something went wrong");
+  }
+};
+
+export const changePassword = async (password: string, newPassword: string) => {
+  try {
+    const user = auth.currentUser;
+    const credential = EmailAuthProvider.credential(user.email, password);
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, newPassword);
+  } catch (err) {
+    if (err instanceof FirebaseError) {
+      switch (err.code) {
+        case "auth/wrong-password":
+          throw new Error("Wrong password");
         default:
           throw new Error("Something went wrong");
       }

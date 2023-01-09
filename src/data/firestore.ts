@@ -201,6 +201,21 @@ export const queryTimesheets = async (
   }));
 };
 
+export const fetchAllTimesheets = async (userId: string) => {
+  const q = query(collection(db, "timesheets"), where("userId", "==", userId));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+};
+
+export const batchDelete = async (ids: string[]) => {
+  const batch = writeBatch(db);
+  ids.forEach((id) => batch.delete(doc(db, "timesheets", id)));
+  await batch.commit();
+};
+
 export const queryTimesheetsLive = (
   userId: string,
   callback: (data: Array<Timesheet & { snapshot: DocumentSnapshot }>) => void,
