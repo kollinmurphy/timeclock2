@@ -1,5 +1,4 @@
 import { changePassword } from "@data/auth";
-import { useAccount } from "@hooks/useAccount";
 import { Button, Input, Modal, Text, VStack } from "native-base";
 import { useCallback, useState } from "react";
 import ErrorAlert from "./ErrorAlert";
@@ -8,7 +7,6 @@ export default function ChangePasswordModal(props: {
   visible: boolean;
   onDismiss: () => void;
 }) {
-  const account = useAccount();
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,8 +17,12 @@ export default function ChangePasswordModal(props: {
     if (newPassword !== confirmPassword)
       return setError("New passwords don't match");
     try {
+      setError("");
       setStatus("loading");
       await changePassword(password, newPassword);
+      setPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
       props.onDismiss();
     } catch (err) {
       setError(err.message);
@@ -39,18 +41,21 @@ export default function ChangePasswordModal(props: {
             </Text>
             <Input
               placeholder="Current Password"
+              value={password}
               onChangeText={setPassword}
               type="password"
               autoCapitalize="none"
             />
             <Input
               placeholder="New Password"
+              value={newPassword}
               onChangeText={setNewPassword}
               type="password"
               autoCapitalize="none"
             />
             <Input
               placeholder="Confirm New Password"
+              value={confirmPassword}
               onChangeText={setConfirmPassword}
               type="password"
               autoCapitalize="none"
