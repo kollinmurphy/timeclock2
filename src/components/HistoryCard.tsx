@@ -1,3 +1,4 @@
+import { logAnalyticsEvent } from "@data/firebase";
 import {
   formatDateMMDD,
   formatDifferenceShort,
@@ -6,7 +7,7 @@ import {
 } from "@utils/dates";
 import { MotiView } from "moti";
 import { Heading, ScrollView, theme, View } from "native-base";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Pressable } from "react-native";
 import { Timesheet, TimesheetHours } from "../types/Timesheet";
 import EditHoursModal from "./EditHoursModal";
@@ -29,6 +30,16 @@ export default function HistoryCard(props: { timesheet: Timesheet }) {
     () => formatDifferenceShort(sumHours(props.timesheet.hours)),
     [props.timesheet.hours]
   );
+
+  useEffect(() => {
+    logAnalyticsEvent(
+      expanded ? "expand_history_card" : "collapse_history_card",
+      {
+        userId: props.timesheet.userId,
+        sort: props.timesheet.sort,
+      }
+    );
+  }, [expanded]);
 
   return (
     <>

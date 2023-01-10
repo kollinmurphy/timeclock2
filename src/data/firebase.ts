@@ -1,3 +1,4 @@
+import analytics from "@react-native-firebase/analytics";
 import { FirebaseOptions, initializeApp } from "firebase/app";
 
 const firebaseConfig: FirebaseOptions = {
@@ -12,3 +13,10 @@ const firebaseConfig: FirebaseOptions = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 export default firebaseApp;
+
+export const logAnalyticsEvent = async (
+  name: string,
+  params?: Record<string, any>
+) => {
+  await analytics().logEvent(name, params);
+};

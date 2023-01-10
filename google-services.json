@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1080175131085",
+    "project_id": "timeclock-c36a4",
+    "storage_bucket": "timeclock-c36a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080175131085:android:e557028d35c3cb5e0cec84",
+        "android_client_info": {
+          "package_name": "com.kollinmurphy.clockwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080175131085-dd0qd7omrgahhulrl7q4qfurpm292v5v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt6Rdg1lrMz1VaythkHuyE3hAnqE-JDwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080175131085-dd0qd7omrgahhulrl7q4qfurpm292v5v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1080175131085-qsks7t86b7816sasl8uravtdkg5lo9oi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kollinmurphy.clockwork"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

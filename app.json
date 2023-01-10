@@ -16,10 +16,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
       "bundleIdentifier": "com.kollinmurphy.clockwork"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "package": "com.kollinmurphy.clockwork",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -33,6 +35,7 @@
       }
     },
     "plugins": [
+      "@react-native-firebase/app",
       [
         "expo-build-properties",
         {

@@ -22,7 +22,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { Timesheet, TimesheetHours } from "../types/Timesheet";
-import firebaseApp from "./firebase";
+import firebaseApp, { logAnalyticsEvent } from "./firebase";
 
 initializeFirestore(firebaseApp, {
   experimentalForceLongPolling: true,
@@ -98,6 +98,7 @@ export const clockIn = async (userId: string, hour: TimesheetHours) => {
   await updateDoc(docRef, {
     hours: arrayUnion(hour),
   });
+  await logAnalyticsEvent("clock_in", { userId, sort, start: hour.start });
 };
 
 export const clockOut = async (userId: string, hour: TimesheetHours) => {
@@ -115,6 +116,7 @@ export const clockOut = async (userId: string, hour: TimesheetHours) => {
     hours: arrayUnion(hour),
   });
   await batch.commit();
+  await logAnalyticsEvent("clock_out", { userId, sort, end: hour.end });
 };
 
 export const updateHours = async (
@@ -137,6 +139,10 @@ export const updateHours = async (
     }),
   });
   await batch.commit();
+  await logAnalyticsEvent("update_hours", {
+    userId,
+    sort,
+  });
 };
 
 export const deleteHours = async (
@@ -148,6 +154,10 @@ export const deleteHours = async (
   const docRef = doc(db, "timesheets", docId);
   await updateDoc(docRef, {
     hours: arrayRemove(hour),
+  });
+  await logAnalyticsEvent("delete_hours", {
+    userId,
+    sort,
   });
 };
 
@@ -180,6 +190,10 @@ export const addHours = async (
       hours: arrayUnion(hour),
     });
   }
+  await logAnalyticsEvent("add_hours", {
+    userId,
+    sort,
+  });
 };
 
 export const queryTimesheets = async (

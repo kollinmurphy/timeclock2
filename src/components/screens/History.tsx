@@ -1,5 +1,6 @@
 import AddHours from "@components/AddHours";
 import HistoryCard from "@components/HistoryCard";
+import { logAnalyticsEvent } from "@data/firebase";
 import { queryTimesheetsLive } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
 import { DocumentSnapshot } from "firebase/firestore";
@@ -10,6 +11,10 @@ import { Timesheet } from "../../types/Timesheet";
 
 export default function History() {
   const account = useAccount();
+
+  useEffect(() => {
+    logAnalyticsEvent("view_history", { userId: account.user?.uid });
+  }, []);
 
   const [pages, setPages] = useState<
     Map<number, Array<Timesheet & { snapshot: DocumentSnapshot }>>

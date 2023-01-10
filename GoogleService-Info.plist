@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1080175131085-qsks7t86b7816sasl8uravtdkg5lo9oi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1080175131085-qsks7t86b7816sasl8uravtdkg5lo9oi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCyeHGx1oEgftcYF5yNGFb1s9YqOjQlYT0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1080175131085</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.kollinmurphy.clockwork</string>
+	<key>PROJECT_ID</key>
+	<string>timeclock-c36a4</string>
+	<key>STORAGE_BUCKET</key>
+	<string>timeclock-c36a4.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1080175131085:ios:d3c1bc8ba0b6ad650cec84</string>
+</dict>
+</plist>

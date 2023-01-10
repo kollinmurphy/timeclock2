@@ -10,7 +10,7 @@ import {
   signInWithEmailAndPassword,
   updatePassword,
 } from "firebase/auth";
-import firebaseApp from "./firebase";
+import firebaseApp, { logAnalyticsEvent } from "./firebase";
 import { batchDelete, fetchAllTimesheets } from "./firestore";
 
 export const auth = getAuth(firebaseApp);
@@ -20,6 +20,7 @@ export const createAcount = async (email: string, password: string) => {
     throw new Error("Password must be at least 6 characters");
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
+    await logAnalyticsEvent("create_account");
     return result.user;
   } catch (err) {
     if (err instanceof FirebaseError) {
@@ -40,6 +41,7 @@ export const linkCredential = async (email: string, password: string) => {
   try {
     const credential = EmailAuthProvider.credential(email, password);
     const result = await linkWithCredential(auth.currentUser, credential);
+    await logAnalyticsEvent("link_credential");
     return result.user;
   } catch (err) {
     if (err instanceof FirebaseError) {
@@ -57,6 +59,7 @@ export const linkCredential = async (email: string, password: string) => {
 export const signIn = async (email: string, password: string) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
+    await logAnalyticsEvent("sign_in");
     return result.user;
   } catch (err) {
     if (err instanceof FirebaseError) {
@@ -75,10 +78,12 @@ export const signIn = async (email: string, password: string) => {
 
 export const signOut = async () => {
   await auth.signOut();
+  await logAnalyticsEvent("sign_out");
 };
 
 export const anonymousSignIn = async () => {
   await signInAnonymously(auth);
+  await logAnalyticsEvent("anonymous_sign_in");
 };
 
 export const deleteAccount = async (password: string) => {
@@ -92,6 +97,9 @@ export const deleteAccount = async (password: string) => {
     const credential = EmailAuthProvider.credential(user.email, password);
     await reauthenticateWithCredential(user, credential);
     const timesheets = await fetchAllTimesheets(user.uid);
+    await logAnalyticsEvent("delete_account", {
+      timesheets: timesheets.length,
+    });
     await batchDelete(timesheets.map((t) => t.id));
     await user.delete();
   } catch (err) {
@@ -110,6 +118,7 @@ export const deleteAccount = async (password: string) => {
 export const resetPassword = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
+    await logAnalyticsEvent("reset_password");
   } catch (err) {
     if (err instanceof FirebaseError) {
       switch (err.code) {
@@ -129,6 +138,7 @@ export const changePassword = async (password: string, newPassword: string) => {
     const credential = EmailAuthProvider.credential(user.email, password);
     await reauthenticateWithCredential(user, credential);
     await updatePassword(user, newPassword);
+    await logAnalyticsEvent("change_password");
   } catch (err) {
     if (err instanceof FirebaseError) {
       switch (err.code) {
