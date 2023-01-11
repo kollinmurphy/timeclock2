@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "versionCode": 2
+      "versionCode": 5
     },
     "extra": {
       "eas": {
@@ -39,6 +39,9 @@
       [
         "expo-build-properties",
         {
+          "android": {
+            "enableProguardInReleaseBuilds": true
+          },
           "ios": {
             "useFrameworks": "static"
           }

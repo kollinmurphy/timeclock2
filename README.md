@@ -6,5 +6,3 @@ ClockWork is a React Native / Expo application that allows users to track their 
 
 - Handle shift running between days
 - Handle shift running between weeks
-- Test changing password
-- Set up Google Analytics
