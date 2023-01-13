@@ -5,13 +5,23 @@ import History from "@components/screens/History";
 import Home from "@components/screens/Home";
 import SignIn from "@components/screens/SignIn";
 import SignUp from "@components/screens/SignUp";
+import useIsDarkMode from "@hooks/useIsDarkMode";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { theme } from "native-base";
 
 const Stack = createNativeStackNavigator();
 
 export default function Router() {
+  const dark = useIsDarkMode();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: dark ? theme.colors.dark[100] : "white",
+        },
+        headerTintColor: dark ? "white" : "black",
+      }}
+    >
       <Stack.Screen
         name="home"
         component={Home}

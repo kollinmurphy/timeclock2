@@ -1,15 +1,16 @@
+import useIsDarkMode from "@hooks/useIsDarkMode";
 import { formatDifferenceShort } from "@utils/dates";
 import { MotiView } from "moti";
-import { useTheme, View } from "native-base";
+import { Text, useTheme, View } from "native-base";
 import { useState } from "react";
-import { Platform, Pressable, Text } from "react-native";
+import { Pressable } from "react-native";
 import { DailySummary, TimesheetHours } from "../types/Timesheet";
 import EditHoursModal from "./EditHoursModal";
 import { CurrentShift } from "./TimesheetCard";
 import TimesheetEntry from "./TimesheetEntry";
 
 const COLLAPSED_HEIGHT = 41;
-const HEIGHT_PER_ITEM = Platform.OS === "ios" ? 35 : 38;
+const HEIGHT_PER_ITEM = 40;
 const BASELINE_EXPANDED_HEIGHT = 12;
 
 export default function TimesheetCardRow({
@@ -31,6 +32,7 @@ export default function TimesheetCardRow({
   roundedBottom?: boolean;
   label: string;
 }) {
+  const dark = useIsDarkMode();
   const [expanded, setExpanded] = useState(false);
   const [editingHours, setEditingHours] = useState<
     TimesheetHours | undefined
@@ -41,7 +43,7 @@ export default function TimesheetCardRow({
     <MotiView
       style={{
         borderWidth: 1,
-        borderColor: theme.colors.dark[700],
+        borderColor: dark ? theme.colors.black : theme.colors.dark[700],
         borderTopLeftRadius: index === 0 ? theme.radii.xl : undefined,
         borderTopRightRadius: index === 0 ? theme.radii.xl : undefined,
         borderBottomLeftRadius: roundedBottom ? theme.radii.xl : undefined,
@@ -50,12 +52,16 @@ export default function TimesheetCardRow({
       }}
       key={day.name}
       from={{
-        backgroundColor: theme.colors.light[50],
+        backgroundColor: dark ? theme.colors.dark[50] : theme.colors.light[50],
         height: COLLAPSED_HEIGHT,
       }}
       animate={{
         backgroundColor: clockedIn
-          ? theme.colors.emerald[100]
+          ? dark
+            ? theme.colors.emerald[900]
+            : theme.colors.emerald[100]
+          : dark
+          ? theme.colors.dark[50]
           : theme.colors.light[50],
         height: expanded
           ? COLLAPSED_HEIGHT +

@@ -1,9 +1,8 @@
 import ErrorAlert from "@components/ErrorAlert";
 import ForgotPasswordModal from "@components/ForgotPasswordModal";
 import { signIn } from "@data/auth";
-import { Button, Input, ScrollView, VStack } from "native-base";
+import { Button, Input, ScrollView, View, VStack } from "native-base";
 import { useCallback, useState } from "react";
-import { View } from "react-native";
 
 export default function SignIn() {
   const [status, setStatus] = useState<"idle" | "loading">("idle");
@@ -31,7 +30,15 @@ export default function SignIn() {
   );
 
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View
+      style={{ flex: 1, alignItems: "center" }}
+      _dark={{
+        backgroundColor: "black",
+      }}
+      _light={{
+        backgroundColor: "gray.50",
+      }}
+    >
       <ScrollView width="100%" flex={1} p={4}>
         <VStack space={3}>
           <Input

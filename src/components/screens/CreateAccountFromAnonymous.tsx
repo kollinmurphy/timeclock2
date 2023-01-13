@@ -2,9 +2,8 @@ import ErrorAlert from "@components/ErrorAlert";
 import { linkCredential } from "@data/auth";
 import { useAccount } from "@hooks/useAccount";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Input, Modal, ScrollView, Text, VStack } from "native-base";
+import { Button, Input, Modal, ScrollView, Text, VStack, View } from "native-base";
 import React, { useCallback, useState } from "react";
-import { View } from "react-native";
 
 export default function CreateAccountFromAnonymous() {
   const navigation = useNavigation();
@@ -43,6 +42,12 @@ export default function CreateAccountFromAnonymous() {
         alignItems: "center",
         flexDirection: "column",
         position: "relative",
+      }}
+      _dark={{
+        backgroundColor: "black",
+      }}
+      _light={{
+        backgroundColor: "gray.50",
       }}
     >
       <ScrollView width="100%" flex={1} p={4}>

@@ -10,6 +10,9 @@ import Router from "src/navigation/Router";
 LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native"]);
 
 const theme = extendTheme({
+  config: {
+    useSystemColorMode: true,
+  },
   colors: {
     primary: {
       50: "#ecfdf5",

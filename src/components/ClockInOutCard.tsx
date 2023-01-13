@@ -84,7 +84,19 @@ export default function ClockInOutCard(props: { timesheet: Timesheet }) {
   );
 
   return (
-    <View m={3} mb={0} p={4} rounded="xl" bg="light.50" shadow="2">
+    <View
+      m={3}
+      mb={0}
+      p={4}
+      rounded="xl"
+      _dark={{
+        bg: "dark.200",
+      }}
+      _light={{
+        bg: "light.50",
+      }}
+      shadow="2"
+    >
       <Text
         style={{
           fontSize: 16,

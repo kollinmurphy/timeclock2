@@ -1,7 +1,7 @@
-import { TimesheetHours } from "../types/Timesheet";
-import { useTheme } from "native-base";
-import { Pressable, Text } from "react-native";
 import { formatDateHHMMAMPM, formatDateMMDD } from "@utils/dates";
+import { Text, useTheme } from "native-base";
+import { Pressable } from "react-native";
+import { TimesheetHours } from "../types/Timesheet";
 
 export default function TimesheetEntry(props: {
   setEditingHours: React.Dispatch<React.SetStateAction<TimesheetHours>>;
@@ -66,7 +66,10 @@ export default function TimesheetEntry(props: {
       </Text>
       {props.hours.end && (
         <Text
-          style={{
+          _dark={{
+            color: theme.colors.light[400],
+          }}
+          _light={{
             color: theme.colors.dark[400],
           }}
         >

@@ -4,9 +4,9 @@ import { logAnalyticsEvent } from "@data/firebase";
 import { queryTimesheetsLive } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
 import { DocumentSnapshot } from "firebase/firestore";
-import { theme } from "native-base";
+import { theme, View } from "native-base";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
 import { Timesheet } from "../../types/Timesheet";
 
 export default function History() {
@@ -69,7 +69,13 @@ export default function History() {
         flex: 1,
         width: "100%",
         alignItems: "center",
-        marginBottom: theme.space[2],
+        paddingBottom: theme.space[2],
+      }}
+      _dark={{
+        backgroundColor: "black",
+      }}
+      _light={{
+        backgroundColor: theme.colors["gray.50"],
       }}
     >
       <FlatList

@@ -5,6 +5,7 @@ import Show from "@components/Show";
 import TimesheetCard from "@components/TimesheetCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useAccount } from "@hooks/useAccount";
+import useIsDarkMode from "@hooks/useIsDarkMode";
 import useTimesheet from "@hooks/useTimesheet";
 import { useNavigation } from "@react-navigation/native";
 import { Button, ScrollView, Text, useTheme, VStack } from "native-base";
@@ -12,6 +13,7 @@ import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 
 export default function Dashboard() {
+  const dark = useIsDarkMode();
   const theme = useTheme();
   const account = useAccount();
   const navigation = useNavigation();
@@ -31,6 +33,7 @@ export default function Dashboard() {
     <View
       style={{
         flex: 1,
+        backgroundColor: dark ? "black" : "white",
       }}
     >
       <Show
@@ -71,9 +74,20 @@ export default function Dashboard() {
                     <FontAwesome5
                       name="history"
                       size={14}
-                      color={theme.colors.emerald[700]}
+                      color={
+                        dark
+                          ? theme.colors.emerald[300]
+                          : theme.colors.emerald[700]
+                      }
                     />
-                    <Text ml={2} color="emerald.700">
+                    <Text
+                      ml={2}
+                      color={
+                        dark
+                          ? theme.colors.emerald[300]
+                          : theme.colors.emerald[700]
+                      }
+                    >
                       View History
                     </Text>
                   </View>

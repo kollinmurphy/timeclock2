@@ -1,10 +1,14 @@
 import { addHours } from "@data/firestore";
 import { useAccount } from "@hooks/useAccount";
-import { formatDateEMMDDYYYY, formatDateHHMMAMPM, formatSort } from "@utils/dates";
+import useIsDarkMode from "@hooks/useIsDarkMode";
+import {
+  formatDateEMMDDYYYY,
+  formatDateHHMMAMPM,
+  formatSort,
+} from "@utils/dates";
 import { add, startOfDay, startOfWeek } from "date-fns";
-import { Button, Modal, theme, View } from "native-base";
+import { Button, Modal, Text, theme, View } from "native-base";
 import { useCallback, useState } from "react";
-import { Text } from "react-native";
 import DatePicker from "react-native-date-picker";
 import ErrorAlert from "./ErrorAlert";
 
@@ -12,6 +16,7 @@ export default function AddHoursModal(props: {
   onClose: () => void;
   open: boolean;
 }) {
+  const dark = useIsDarkMode();
   const account = useAccount();
   const [day, setDay] = useState<Date>(new Date());
   const [start, setStart] = useState<Date>(() =>
@@ -110,7 +115,7 @@ export default function AddHoursModal(props: {
           <Button
             onPress={() => setDayOpen(true)}
             size="lg"
-            colorScheme="indigo"
+            colorScheme={dark ? "primary" : "indigo"}
             variant="outline"
             style={{
               marginHorizontal: theme.space[2],
@@ -130,7 +135,7 @@ export default function AddHoursModal(props: {
           >
             <Button
               size="lg"
-              colorScheme="indigo"
+              colorScheme={dark ? "primary" : "indigo"}
               variant="outline"
               onPress={() => setStartOpen(true)}
             >
@@ -145,7 +150,7 @@ export default function AddHoursModal(props: {
             </Text>
             <Button
               size="lg"
-              colorScheme="indigo"
+              colorScheme={dark ? "primary" : "indigo"}
               onPress={() => setEndOpen(true)}
               variant="outline"
             >

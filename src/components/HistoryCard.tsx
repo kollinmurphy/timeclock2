@@ -51,9 +51,14 @@ export default function HistoryCard(props: { timesheet: Timesheet }) {
       <View
         rounded="xl"
         shadow="1"
+        _light={{
+          bg: "white",
+        }}
+        _dark={{
+          bg: "gray.800",
+        }}
         style={{
           width: "100%",
-          backgroundColor: "white",
         }}
       >
         <Pressable

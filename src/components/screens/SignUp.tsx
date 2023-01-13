@@ -3,9 +3,16 @@ import ErrorAlert from "@components/ErrorAlert";
 import { createAcount } from "@data/auth";
 import { useAccount } from "@hooks/useAccount";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Heading, Input, ScrollView, Text, VStack } from "native-base";
+import {
+  Button,
+  Heading,
+  Input,
+  ScrollView,
+  Text,
+  View,
+  VStack,
+} from "native-base";
 import React, { useCallback, useEffect, useState } from "react";
-import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SignUp() {
@@ -66,6 +73,12 @@ export default function SignUp() {
         alignItems: "center",
         flexDirection: "column",
         position: "relative",
+      }}
+      _dark={{
+        backgroundColor: "black",
+      }}
+      _light={{
+        backgroundColor: "gray.50",
       }}
     >
       <ScrollView width="100%" flex={1} p={4}>

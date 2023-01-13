@@ -10,7 +10,18 @@ export type CurrentShift = {
 export default function TimesheetCard(props: { timesheet: Timesheet }) {
   const { start, end } = getStartAndEndFromSort(props.timesheet.sort);
   return (
-    <View p={4} rounded="xl" bg="light.50" shadow="2" mx={3}>
+    <View
+      p={4}
+      rounded="xl"
+      _light={{
+        bg: "light.50",
+      }}
+      _dark={{
+        bg: "dark.200",
+      }}
+      shadow="2"
+      mx={3}
+    >
       <Heading size="md" textAlign="center">
         {formatDateMMDD(start)} - {formatDateMMDD(end)}
       </Heading>

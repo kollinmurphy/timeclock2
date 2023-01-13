@@ -5,9 +5,8 @@ import {
   sumHoursByDay,
 } from "@utils/dates";
 import { add, differenceInMinutes, isToday } from "date-fns";
-import { View } from "native-base";
+import { View, Text } from "native-base";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Text } from "react-native";
 import { Timesheet } from "../types/Timesheet";
 import TimesheetCardDay from "./TimesheetCardDay";
 
@@ -85,7 +84,17 @@ export default function TimesheetTable(props: {
 
   return (
     <>
-      <View borderColor="dark.700" borderWidth="1" rounded="xl" my={4}>
+      <View
+        _dark={{
+          borderColor: "black",
+        }}
+        _light={{
+          borderColor: "dark.700",
+        }}
+        borderWidth="1"
+        rounded="xl"
+        my={4}
+      >
         {daysOfWeek.map((day, index) => (
           <TimesheetCardDay
             key={index}
@@ -109,9 +118,15 @@ export default function TimesheetTable(props: {
             flexDirection="row"
             justifyContent="space-between"
             borderWidth="1"
-            borderColor="dark.700"
             roundedBottom="xl"
-            bg="light.100"
+            _light={{
+              bg: "light.100",
+              borderColor: "dark.700",
+            }}
+            _dark={{
+              bg: "dark.100",
+              borderColor: "black",
+            }}
           >
             <Text
               style={{

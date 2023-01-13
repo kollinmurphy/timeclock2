@@ -1,6 +1,7 @@
 import { signOut } from "@data/auth";
 import { Entypo } from "@expo/vector-icons";
 import { useAccount } from "@hooks/useAccount";
+import useIsDarkMode from "@hooks/useIsDarkMode";
 import { Menu } from "native-base";
 import { useCallback, useState } from "react";
 import { Pressable } from "react-native";
@@ -9,6 +10,7 @@ import DeleteAccountModal from "./DeleteAccountModal";
 import Show from "./Show";
 
 export default function OptionsMenu() {
+  const dark = useIsDarkMode();
   const account = useAccount();
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showChangePasswordModal, setShowPasswordModal] = useState(false);
@@ -39,7 +41,11 @@ export default function OptionsMenu() {
               },
             ]}
           >
-            <Entypo name="dots-three-horizontal" size={18} />
+            <Entypo
+              name="dots-three-horizontal"
+              size={18}
+              color={dark ? "white" : "black"}
+            />
           </Pressable>
         )}
       >
