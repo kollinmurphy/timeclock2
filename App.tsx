@@ -1,3 +1,4 @@
+import useIsDarkMode from "@hooks/useIsDarkMode";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { extendTheme, NativeBaseProvider } from "native-base";
@@ -30,15 +31,18 @@ const theme = extendTheme({
 });
 
 export default function App() {
+  const dark = useIsDarkMode();
+
   useEffect(() => {
     mobileAds().initialize();
   }, []);
+
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
         <AuthProvider>
           <Router />
-          <StatusBar style="dark" />
+          <StatusBar style={dark ? "light" : "dark"} />
         </AuthProvider>
       </NativeBaseProvider>
     </NavigationContainer>
